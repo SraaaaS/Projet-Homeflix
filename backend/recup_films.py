@@ -1,8 +1,10 @@
 import requests
 import pandas as pd
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
-API_KEY = "d72bf7e71fa87880ec2a936d2e1e0584"
+API_KEY = os.getenv("TMDB_API_KEY")
 BASE_URL = "https://api.themoviedb.org/3/movie/popular"
 # Chemin du dossier data
 DATA_DIR = "data"
@@ -29,7 +31,7 @@ def fetch_movies():
             continue #passer a la page suivante
 
         data = response.json()
-        movies = data.get("results", [])
+        movies = data.get("results", []) #Si "results" existe, .get("results") renvoie la liste de films sinon renvoie une liste vide ([]) au lieu de provoquer une erreur
 
         if not movies:
             print("Aucune donnée récupérée pour la page {page}")
