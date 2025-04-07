@@ -2,19 +2,24 @@ import os
 import logging
 import pandas as pd
 import duckdb
+
 # Configuration
-DB_PATH = "data/movies.db"
+DB_PATH_MOVIES = "data/movies.db"
+DB_PATH_RATINGS ="data/ratings.db"
 MOVIES_CSV = "data/movies.csv"
 RATINGS_CSV = "data/ratings.csv"
 REQUIRED_MOVIE_COLUMNS = {"id", "title", "genres", "release_date", "vote_average"}
 REQUIRED_RATING_COLUMNS = {"userId", "movieId", "rating", "timestamp"}
+
 # Configurer les logs
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+
 # Vérifier que les fichiers existent
 for file in [MOVIES_CSV, RATINGS_CSV]:
     if not os.path.exists(file):
         logging.error(f"Le fichier {file} est introuvable !")
         exit(1)
+
 # Lecture sécurisée des CSV
 def safe_read_csv(filepath):
     try:
@@ -27,6 +32,7 @@ def safe_read_csv(filepath):
         exit(1)
 df_movies = safe_read_csv(MOVIES_CSV)
 df_ratings = safe_read_csv(RATINGS_CSV)
+
 # Vérification des colonnes
 def validate_columns(df, required_columns, filename):
     missing_columns = required_columns - set(df.columns)
@@ -35,10 +41,13 @@ def validate_columns(df, required_columns, filename):
         exit(1)
 validate_columns(df_movies, REQUIRED_MOVIE_COLUMNS, MOVIES_CSV)
 validate_columns(df_ratings, REQUIRED_RATING_COLUMNS, RATINGS_CSV)
+
 # Renommer les colonnes des évaluations
 df_ratings.columns = ["user_id", "film_id", "rating", "timestamp"]
+
 # Connexion à DuckDB
-conn = duckdb.connect(DB_PATH)
+conn = duckdb.connect(DB_PATH_MOVIES)
+
 # Fonction pour insérer les données dans DuckDB sans doublons
 def insert_dataframe(table_name, df, columns):
     # Créer la table si elle n'existe pas
@@ -62,7 +71,10 @@ def insert_dataframe(table_name, df, columns):
 movie_columns = ["id", "title", "genres", "release_date", "vote_average"]
 # Insérer les données
 insert_dataframe("movies", df_movies, movie_columns)
+
+conn = duckdb.connect(DB_PATH_RATINGS)
 insert_dataframe("ratings", df_ratings, ["user_id", "film_id", "rating", "timestamp"])
+
 # Log des informations
 logging.info(f" {len(df_movies)} films importés dans DuckDB.")
 logging.info(f" {len(df_ratings)} évaluations importées dans DuckDB.")
