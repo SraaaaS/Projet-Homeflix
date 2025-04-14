@@ -1,12 +1,10 @@
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Union
 
 class Movie(BaseModel):
     id : int
     title : str
-    genre : str
-    release_date : str
-    vote_average : float
+    genres : Optional[Union[str, int]]
 
 
 class Recommandation(BaseModel):
@@ -20,12 +18,32 @@ class Top_Movies(BaseModel):
     rating_average : float
 
 class Genre_Distrib(BaseModel):
-    genre : str
+    genres : str
     nombre : int
 
 class Statistics(BaseModel):
-    genre : str
+    genres : Optional[Union[str, int]]
     year : int
-    best_films = List[Top_Movies]
-    distribution_genres = List[Genre_Distrib]
+    best_films : List[Top_Movies]
+    distribution_genres : Union[Genre_Distrib, List[Genre_Distrib]]
 
+    # class Config:
+    #     arbitrary_types_allowed = True
+
+
+# from typing import List, Dict, Union
+# from pydantic import BaseModel
+
+# class Movie(BaseModel):
+#     id: int
+#     title: str
+#     genres: str
+#     vote_average: float
+
+# class Recommandation(BaseModel):
+#     user_id: int
+#     recommendations: List[Dict[str, Union[str, int, float]]]
+
+# class Statistics(BaseModel):
+#     top_movies: List[Dict[str, Union[str, float]]]
+#     genre_distribution: Dict[str, int]
