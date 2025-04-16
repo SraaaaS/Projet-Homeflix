@@ -1,68 +1,80 @@
 import pandas as pd
 import numpy as np
-import duckdb
 from sklearn.decomposition import TruncatedSVD
-from sklearn.metrics import mean_squared_error
+import duckdb
+from sklearn.preprocessing import MinMaxScaler
+from backend.schemas import Recommandation
 
-# Connexion à DuckDB pour récupérer les données
+
 conn = duckdb.connect("../data/movies.db")
 
-# Récupérer les données des évaluations et des films
 ratings_df = conn.execute("SELECT user_id, film_id, rating FROM ratings").df()
 movies_df = conn.execute("SELECT id, title FROM movies").df()
-ratings_df = ratings_df[ratings_df["user_id"].isin(ratings_df["user_id"].unique()[:500])]
+ratings_df = ratings_df[ratings_df["user_id"].isin(ratings_df["user_id"].unique()[:10000])]
+ratings_df["film_id"] = ratings_df["film_id"].astype(int) #Sécurité
+movies_df["id"] = movies_df["id"].astype(int) #Sécurité
 
-print(ratings_df)
+ratings_df = ratings_df[ratings_df["film_id"].isin(movies_df["id"])] #On garde les notes des films qui sont dans notre base
 
-# Créer une matrice utilisateur x film (user-item matrix)
-ratings_matrix = ratings_df.pivot(index='user_id', columns='film_id', values='rating').fillna(0)
-ratings_matrix.index = ratings_matrix.index.astype(str)
-ratings_matrix.columns = ratings_matrix.columns.astype(str)
-# Appliquer SVD (Truncated SVD)
-svd = TruncatedSVD(n_components=50, random_state=42)
-svd_matrix = svd.fit_transform(ratings_matrix)
+ratings_df["rating"] = ratings_df["rating"].astype(float) #Sécurité
 
-def get_movie_title(movie_id):
-    # On suppose que tu as un fichier CSV ou une base de données qui contient les titres des films
-    # Exemple avec un fichier CSV "movies.csv" qui a des colonnes "id" et "title"
-    movie_df = pd.read_csv("../data/movies.db", encoding="ISO-8859-1")  # ou utilise une autre méthode d'accès à la source des films
-    # On cherche le film en fonction de son ID
-    movie_title = movie_df[movie_df['id'] == int(movie_id)]['title'].values[0]
+merged_df = ratings_df.merge(movies_df, left_on='film_id', right_on='id', how='left') #Merge pour avoir le nom des films
+
+ratings_matrix = ratings_df.pivot_table(index='user_id', columns='film_id', values='rating').fillna(0) #Matrice userxfilm avec des 0 quand pas de note
+
+
+#Partie application SVD
+svd = TruncatedSVD(n_components=14, random_state=42) 
+matrice_latente = svd.fit_transform(ratings_matrix)
+U_sig = matrice_latente                  
+V_trans = svd.components_               
+predicted_ratings = np.dot(U_sig, V_trans)
+
+#On met en dataframe pour plus de clarté
+pred_df = pd.DataFrame(predicted_ratings, index=ratings_matrix.index, columns=ratings_matrix.columns)
+
+#On va juste réajuster les valeurs car ya des négatives etcc sur l'échelle de note 0 a 5
+scaler = MinMaxScaler(feature_range=(0, 5))
+pred_df_scaled = pd.DataFrame(scaler.fit_transform(pred_df), index=pred_df.index, columns=pred_df.columns)
+pred_df = pred_df_scaled
+
+def recommend_movies(user_id):
+    if user_id not in pred_df.index:
+        print(f"L'utilisateur {user_id} n'existe pas dans les prédictions.")
+        return []
     
-    return movie_title
+    predictions = pred_df.loc[user_id]
+    films_deja_notes = ratings_df[ratings_df['user_id'] == user_id]['film_id'].tolist()
+    vrai_predictions = predictions.drop(index=films_deja_notes) #On garde seulement les films non notés
 
-# Fonction pour prédire une note pour un utilisateur et un film
-def predict_rating(user_id: int, movie_id: int):
-    # Trouver l'index de l'utilisateur et du film dans la matrice
-    user_index = ratings_matrix.index.get_loc(user_id)
-    movie_index = ratings_matrix.columns.get_loc(movie_id)
+    if vrai_predictions.empty:
+        print(f"Aucune recommandation disponible pour l'utilisateur {user_id}.")
+        return []
+
+    top10 = vrai_predictions.sort_values(ascending=False).head(10) #On garde le top 10 des recommandations
+
+    reco_df = pd.DataFrame({
+        'film_id': top10.index,
+        'predicted_rating': top10.values
+    })
+
+    reco_df['film_id'] = reco_df['film_id'].astype(int) #Sécurité
+    movies_df['id'] = movies_df['id'].astype(int) #Sécurité
+
+    reco_df2 = reco_df.merge(movies_df, left_on='film_id', right_on='id', how='left')
+    reco_df2=reco_df2[['film_id', 'predicted_rating','title']]
+    print(reco_df2)
+    print(int(reco_df2['film_id'][1]))
+    recommandations=[]
+    for i in range(10): #Passage en liste de Recommandation
+        recommandations = recommandations.append(
+            Recommandation(
+            id=int(reco_df2['film_id'][i]),
+            title=reco_df2['title'][i],
+            rating_predicted=float(reco_df2['predicted_rating'][i])
+        )
+        )
+        #Recommande
+
+    return recommandations
     
-    # Calculer la prédiction en utilisant la matrice de caractéristiques SVD
-    predicted_rating = np.dot(svd_matrix[user_index], svd.components_[:, movie_index])
-    return predicted_rating
-
-# Fonction pour recommander des films pour un utilisateur donné
-def recommend_movies(user_id, n=5):
-    user_id = str(user_id)
-    recommendations = []
-    
-    for movie_id in ratings_matrix.columns:
-        if ratings_matrix.at[user_id, movie_id] == 0:
-            predicted_rating = predict_rating(user_id, movie_id)
-            if predicted_rating is not None:
-                recommendations.append({
-                    'id': movie_id,
-                    'title': get_movie_title(movie_id),
-                    'rating_predicted': predicted_rating
-                })
-
-    # Trier et prendre les meilleurs
-    recommendations = sorted(recommendations, key=lambda x: x['rating_predicted'], reverse=True)[:n]
-    return recommendations
-
-
-def get_valid_user_ids():
-    return ratings_matrix.index.tolist()
-
-
-conn.close()
