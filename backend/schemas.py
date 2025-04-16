@@ -1,17 +1,18 @@
 from pydantic import BaseModel
-from typing import List, Union
+from typing import List, Union, Optional
 
 class Movie(BaseModel):
     id : int
-    title : str
-    genres : str
+    title : str    
+    genres : Optional[str]
 
-
-class Recommandation(BaseModel):
-    id : int
+class ItemDeRecommandation(BaseModel):
     title : str
     rating_predicted : float
     
+class ReponseDeRecommandation(BaseModel):
+    id : int
+    recommandation : List[ItemDeRecommandation]
 
 class Top_Movies(BaseModel):
     title : str

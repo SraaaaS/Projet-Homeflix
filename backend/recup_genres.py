@@ -23,7 +23,7 @@ genres_data = response.json()["genres"]
 # Création du dictionnaire id → nom
 genre_map = {genre["id"]: genre["name"] for genre in genres_data}
 
-df = pd.read_csv("../data/movies.csv")
+df = pd.read_csv("data/movies.csv")
 
 def convert_genres(genre_ids_str):
     # Nettoyer et convertir en liste d'int
@@ -39,4 +39,4 @@ def convert_genres(genre_ids_str):
 df["genres"] = df["genres"].apply(convert_genres)
 
 
-df.to_csv("../data/movies.csv", index=False)
+df.to_csv("data/movies.csv", index=False)

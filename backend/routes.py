@@ -4,7 +4,7 @@ import pandas as pd
 import duckdb
 
 from backend.models import recommend_movies
-from backend.schemas import Movie, Recommandation, Statistics, Top_Movies, Genre_Distrib
+from backend.schemas import Movie, ReponseDeRecommandation, Statistics, Top_Movies, Genre_Distrib
 
 from fastapi import HTTPException
 import traceback
@@ -25,14 +25,16 @@ def get_movie():
 
 
 
-@router.post("/recommandation/{id_user}", response_model=Dict[str, List[Recommandation]])
+@router.post("/recommandation/{id_user}", response_model=ReponseDeRecommandation)
 def post_recommandations(id_user : int):    
     
     liste_de_recommandations = recommend_movies(id_user) #la fonction realisant les recmmandations
     
     #renvoyer le JSON des recommandations proposées à l'utilisateur d'identifiant id_user
-    return {"id" : id_user, "recommandations proposées" : liste_de_recommandations}
-
+    #return {"id" : id_user, "recommandations proposées" : liste_de_recommandations}
+   
+   
+    return liste_de_recommandations 
 
 
 @router.get("/statistics/{genres}/{year}", response_model=Dict[str, Statistics])

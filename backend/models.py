@@ -3,10 +3,10 @@ import numpy as np
 from sklearn.decomposition import TruncatedSVD
 import duckdb
 from sklearn.preprocessing import MinMaxScaler
-from backend.schemas import Recommandation
+from backend.schemas import ReponseDeRecommandation
 
 
-conn = duckdb.connect("../data/movies.db")
+conn = duckdb.connect("data/movies.db")
 
 ratings_df = conn.execute("SELECT user_id, film_id, rating FROM ratings").df()
 movies_df = conn.execute("SELECT id, title FROM movies").df()
@@ -38,43 +38,80 @@ scaler = MinMaxScaler(feature_range=(0, 5))
 pred_df_scaled = pd.DataFrame(scaler.fit_transform(pred_df), index=pred_df.index, columns=pred_df.columns)
 pred_df = pred_df_scaled
 
-def recommend_movies(user_id):
+# def recommend_movies(user_id):
+#     if user_id not in pred_df.index:
+#         print(f"L'utilisateur {user_id} n'existe pas dans les prédictions.")
+#         return []
+    
+#     predictions = pred_df.loc[user_id]
+#     films_deja_notes = ratings_df[ratings_df['user_id'] == user_id]['film_id'].tolist()
+#     vrai_predictions = predictions.drop(index=films_deja_notes) #On garde seulement les films non notés
+
+#     if vrai_predictions.empty:
+#         print(f"Aucune recommandation disponible pour l'utilisateur {user_id}.")
+#         return []
+
+#     top10 = vrai_predictions.sort_values(ascending=False).head(10) #On garde le top 10 des recommandations
+
+#     reco_df = pd.DataFrame({
+#         'film_id': top10.index,
+#         'predicted_rating': top10.values
+#     })
+
+#     reco_df['film_id'] = reco_df['film_id'].astype(int) #Sécurité
+#     movies_df['id'] = movies_df['id'].astype(int) #Sécurité
+
+#     reco_df2 = reco_df.merge(movies_df, left_on='film_id', right_on='id', how='left')
+#     reco_df2=reco_df2[['film_id', 'predicted_rating','title']]
+#     print(reco_df2)
+#     print(int(reco_df2['film_id'][1]))
+#     recommandations=[]
+#     for i in range(10): #Passage en liste de Recommandation
+#         recommandations = recommandations.append(
+#             ReponseDeRecommandation(
+#             id=int(reco_df2['film_id'][i]),
+#             title=reco_df2['title'][i],
+#             rating_predicted=float(reco_df2['predicted_rating'][i])
+#         )
+#         )
+#         #Recommande
+
+#     return recommandations
+    
+from backend.schemas import ReponseDeRecommandation, ItemDeRecommandation
+
+def recommend_movies(user_id: int) -> ReponseDeRecommandation:
     if user_id not in pred_df.index:
         print(f"L'utilisateur {user_id} n'existe pas dans les prédictions.")
-        return []
-    
+        return ReponseDeRecommandation(id=user_id, recommandation=[])
+
     predictions = pred_df.loc[user_id]
     films_deja_notes = ratings_df[ratings_df['user_id'] == user_id]['film_id'].tolist()
-    vrai_predictions = predictions.drop(index=films_deja_notes) #On garde seulement les films non notés
+    vrai_predictions = predictions.drop(index=films_deja_notes)
 
     if vrai_predictions.empty:
         print(f"Aucune recommandation disponible pour l'utilisateur {user_id}.")
-        return []
+        return ReponseDeRecommandation(id=user_id, recommandation=[])
 
-    top10 = vrai_predictions.sort_values(ascending=False).head(10) #On garde le top 10 des recommandations
+    top10 = vrai_predictions.sort_values(ascending=False).head(10)
 
     reco_df = pd.DataFrame({
         'film_id': top10.index,
         'predicted_rating': top10.values
     })
 
-    reco_df['film_id'] = reco_df['film_id'].astype(int) #Sécurité
-    movies_df['id'] = movies_df['id'].astype(int) #Sécurité
-
+    reco_df['film_id'] = reco_df['film_id'].astype(int)
     reco_df2 = reco_df.merge(movies_df, left_on='film_id', right_on='id', how='left')
-    reco_df2=reco_df2[['film_id', 'predicted_rating','title']]
-    print(reco_df2)
-    print(int(reco_df2['film_id'][1]))
-    recommandations=[]
-    for i in range(10): #Passage en liste de Recommandation
-        recommandations = recommandations.append(
-            Recommandation(
-            id=int(reco_df2['film_id'][i]),
-            title=reco_df2['title'][i],
-            rating_predicted=float(reco_df2['predicted_rating'][i])
-        )
-        )
-        #Recommande
+    reco_df2 = reco_df2[['film_id', 'predicted_rating', 'title']]
 
-    return recommandations
-    
+    recommandations = []
+    for i in range(len(reco_df2)):
+        recommandations.append(ItemDeRecommandation(
+            title=reco_df2['title'].iloc[i],
+            rating_predicted=float(reco_df2['predicted_rating'].iloc[i])
+        ))
+
+    return ReponseDeRecommandation(
+        id=user_id,
+        recommandation=recommandations
+    )
