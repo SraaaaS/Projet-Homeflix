@@ -1,10 +1,10 @@
 from pydantic import BaseModel
-from typing import List, Optional, Union
+from typing import List, Union
 
 class Movie(BaseModel):
     id : int
     title : str
-    genres : Optional[Union[str, int]]
+    genres : str
 
 
 class Recommandation(BaseModel):
@@ -22,7 +22,7 @@ class Genre_Distrib(BaseModel):
     nombre : int
 
 class Statistics(BaseModel):
-    genres : Optional[Union[str, int]]
+    genres : str
     year : int
     best_films : List[Top_Movies]
     distribution_genres : Union[Genre_Distrib, List[Genre_Distrib]]
