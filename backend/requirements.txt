@@ -78,3 +78,7 @@ wcwidth==0.2.13
 wheel==0.45.1
 win32_setctime==1.2.0
 wordcloud==1.9.4
+uvicorn==0.20.0
+pydantic==1.10.6
+typing==3.7.4.3
+fastapi==0.87.0
