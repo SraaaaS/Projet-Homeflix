@@ -66,9 +66,6 @@ def recommend_movies(user_id: int) -> ReponseDeRecommandation:
     print(merged_df)
     ratings_matrix = ratings_df.pivot_table(index='user_id', columns='film_id', values='rating').fillna(0) #Matrice userxfilm avec des 0 quand pas de note
 
-
-    print(ratings_matrix)
-
     #Partie application SVD
     svd = TruncatedSVD(n_components=14, random_state=42) 
     matrice_latente = svd.fit_transform(ratings_matrix)
