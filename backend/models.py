@@ -6,37 +6,6 @@ from sklearn.preprocessing import MinMaxScaler
 from backend.schemas import ReponseDeRecommandation
 
 
-conn = duckdb.connect("data/movies.db")
-
-ratings_df = conn.execute("SELECT user_id, film_id, rating FROM ratings").df()
-movies_df = conn.execute("SELECT id, title FROM movies").df()
-ratings_df = ratings_df[ratings_df["user_id"].isin(ratings_df["user_id"].unique()[:10000])]
-ratings_df["film_id"] = ratings_df["film_id"].astype(int) #Sécurité
-movies_df["id"] = movies_df["id"].astype(int) #Sécurité
-
-ratings_df = ratings_df[ratings_df["film_id"].isin(movies_df["id"])] #On garde les notes des films qui sont dans notre base
-
-ratings_df["rating"] = ratings_df["rating"].astype(float) #Sécurité
-
-merged_df = ratings_df.merge(movies_df, left_on='film_id', right_on='id', how='left') #Merge pour avoir le nom des films
-
-ratings_matrix = ratings_df.pivot_table(index='user_id', columns='film_id', values='rating').fillna(0) #Matrice userxfilm avec des 0 quand pas de note
-
-
-#Partie application SVD
-svd = TruncatedSVD(n_components=14, random_state=42) 
-matrice_latente = svd.fit_transform(ratings_matrix)
-U_sig = matrice_latente                  
-V_trans = svd.components_               
-predicted_ratings = np.dot(U_sig, V_trans)
-
-#On met en dataframe pour plus de clarté
-pred_df = pd.DataFrame(predicted_ratings, index=ratings_matrix.index, columns=ratings_matrix.columns)
-
-#On va juste réajuster les valeurs car ya des négatives etcc sur l'échelle de note 0 a 5
-scaler = MinMaxScaler(feature_range=(0, 5))
-pred_df_scaled = pd.DataFrame(scaler.fit_transform(pred_df), index=pred_df.index, columns=pred_df.columns)
-pred_df = pred_df_scaled
 
 # def recommend_movies(user_id):
 #     if user_id not in pred_df.index:
@@ -81,6 +50,43 @@ pred_df = pred_df_scaled
 from backend.schemas import ReponseDeRecommandation, ItemDeRecommandation
 
 def recommend_movies(user_id: int) -> ReponseDeRecommandation:
+    conn = duckdb.connect("data/movies.db")
+
+    ratings_df = conn.execute("SELECT user_id, film_id, rating FROM ratings").df()
+    movies_df = conn.execute("SELECT id, title FROM movies").df()
+    ratings_df = ratings_df[ratings_df["user_id"].isin(ratings_df["user_id"].unique()[:10000])]
+    ratings_df["film_id"] = ratings_df["film_id"].astype(int) #Sécurité
+    movies_df["id"] = movies_df["id"].astype(int) #Sécurité
+    ratings_df["user_id"] =  ratings_df["user_id"].astype(int)#sara
+    ratings_df = ratings_df[ratings_df["film_id"].isin(movies_df["id"])] #On garde les notes des films qui sont dans notre base
+
+    ratings_df["rating"] = ratings_df["rating"].astype(float) #Sécurité
+
+    merged_df = ratings_df.merge(movies_df, left_on='film_id', right_on='id', how='left') #Merge pour avoir le nom des films    
+    print(merged_df)
+    ratings_matrix = ratings_df.pivot_table(index='user_id', columns='film_id', values='rating').fillna(0) #Matrice userxfilm avec des 0 quand pas de note
+
+
+    print(ratings_matrix)
+
+    #Partie application SVD
+    svd = TruncatedSVD(n_components=14, random_state=42) 
+    matrice_latente = svd.fit_transform(ratings_matrix)
+    U_sig = matrice_latente                  
+    V_trans = svd.components_               
+    predicted_ratings = np.dot(U_sig, V_trans)
+
+    #On met en dataframe pour plus de clarté
+    pred_df = pd.DataFrame(predicted_ratings, index=ratings_matrix.index, columns=ratings_matrix.columns)
+
+    #On va juste réajuster les valeurs car ya des négatives etcc sur l'échelle de note 0 a 5
+    scaler = MinMaxScaler(feature_range=(0, 10))
+    pred_df_scaled = pd.DataFrame(scaler.fit_transform(pred_df), index=pred_df.index, columns=pred_df.columns)
+    pred_df = pred_df_scaled
+
+        
+    print(pred_df.index.tolist()[:10])
+
     if user_id not in pred_df.index:
         print(f"L'utilisateur {user_id} n'existe pas dans les prédictions.")
         return ReponseDeRecommandation(id=user_id, recommandation=[])
