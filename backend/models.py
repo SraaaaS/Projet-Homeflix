@@ -6,7 +6,7 @@ from sklearn.preprocessing import MinMaxScaler
 from backend.schemas import ReponseDeRecommandation, ItemDeRecommandation
 
 def recommend_movies(user_id: int) -> ReponseDeRecommandation:
-    conn = duckdb.connect("data/movies.db")
+    conn = duckdb.connect("data/movies.db",read_only=True)
 
     ratings_df = conn.execute("SELECT user_id, film_id, rating FROM ratings").df()
     movies_df = conn.execute("SELECT id, title FROM movies").df()
