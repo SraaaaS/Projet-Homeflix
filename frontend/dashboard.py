@@ -1,4 +1,3 @@
-
 import streamlit as st
 import duckdb
 import pandas as pd
@@ -81,30 +80,30 @@ elif choice== "A propos" :
     except FileNotFoundError:
         st.error("CONSIGNE.md non trouvée")
 
-#elif choice=="Recommandations" :
-# st.subheader("🎯 Recommandation personnalisée")
+elif choice=="Recommandations" :
+ st.subheader("🎯 Recommandation personnalisée")
 
-# user_id = st.number_input("Entrez votre identifiant utilisateur :", min_value=1, step=1)
+ user_id = st.number_input("Entrez votre identifiant utilisateur :", min_value=1, step=1)
 
-# if st.button("Obtenir mes recommandations") and user_id:
-#     try:
-#         # Appel à l'API backend
-#         response = requests.post(
-#             f"http://127.0.0.1:8000/recommandation/{user_id}"  # Remplace par ton URL si besoin
+ if st.button("Obtenir mes recommandations") and user_id:
+     try:
+         # Appel à l'API backend
+         response = requests.post(
+             f"http://127.0.0.1:8000/recommandation/{user_id}"  # Remplace par ton URL si besoin
         
-#         )
-#         if response.status_code == 200:
-#             data = response.json()
-#             st.success(f"Recommandations pour l'utilisateur {data['id']}")
+         )
+         if response.status_code == 200:
+             data = response.json()
+             st.success(f"Recommandations pour l'utilisateur {data['id']}")
 
-#             recommandations = pd.DataFrame(data["recommandation"])
-#             st.dataframe(recommandations)
+             recommandations = pd.DataFrame(data["recommandation"])
+             st.dataframe(recommandations)
 
-#         else:
-#             st.error(f"Erreur {response.status_code} : {response.text}")
+         else:
+             st.error(f"Erreur {response.status_code} : {response.text}")
 
-#     except Exception as e:
-#         st.error(f"Erreur lors de l'appel API : {e}")
+     except Exception as e:
+         st.error(f"Erreur lors de l'appel API : {e}")
 
 
 

@@ -1,7 +1,7 @@
 from fastapi import APIRouter, FastAPI
 from typing import List, Optional, Dict
 import pandas as pd
-import duckdb
+import duckdb   
 
 from backend.models import recommend_movies
 from backend.schemas import Movie, ReponseDeRecommandation, Statistics, Top_Movies, Genre_Distrib
@@ -76,4 +76,5 @@ def get_statistics(genres : str, year : int):
              "distribution_genres" : genre_distrib.to_dict(orient="records") }
             }
 
-
+#app.include_router(router)
+conn.close()
