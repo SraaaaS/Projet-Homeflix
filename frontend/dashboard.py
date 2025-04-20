@@ -35,7 +35,7 @@ choice = st.sidebar.radio("Sélectionnez une section", ["Repartition des notes m
                                                      "A propos"])
 
 if choice == "Repartition des notes moyennes":
-    st.subheader("Réparition des notes moyennes")
+    st.subheader("Répartition des notes moyennes")
     hist_values=np.histogram(movies_df["vote_average"])[0]
     st.bar_chart(hist_values, color="#9370DB")
 
@@ -83,49 +83,50 @@ elif choice== "A propos" :
         st.error("CONSIGNE.md non trouvée")
 
 elif choice=="Statistiques par utilisateur":
-    ratings_df=conn.execute("SELECT user_id, rating FROM ratings").df()
-user_saisi=st.text_input("Entrez l'ID de l'utilisateur :", "")
-if user_saisi:
-    try:
-        user_saisi_int=int(user_saisi)
-        if user_saisi_int in ratings_df["user_id"].unique().astype(int):
-            user_ratings=ratings_df[ratings_df["user_id"] == user_saisi]
-            hist_data=user_ratings["rating"].value_counts().sort_index()
-            st.title("Réparition des notes moyennes")
-            st.bar_chart(hist_data,color="#FF00FF")
-            moyenne=user_ratings["rating"].astype(float).mean()
-            total=len(user_ratings["rating"])
-            st.write("Nombre de notes attribuées :", total)
-            st.write("Moyenne des notes attribuées :", moyenne)
-        else:
-            st.warning("L'ID de l'utilisateur n'existe pas.")
-    except ValueError:
-        st.error("Veuillez entrer un ID utilisateur valide (un entier).")
+    st.subheader("Statistiques par utilisateur")
+    ratings_df=conn.execute("SELECT user_id, rating FROM ratings").df() 
+    user_saisi=st.text_input("Entrez l'ID de l'utilisateur :", "")
+    if st.button("Obtenir les statistiques de l'utilisateur") and user_saisi:
+        try:
+            user_saisi_int=int(user_saisi)
+            if user_saisi_int in ratings_df["user_id"].unique().astype(int):
+                user_ratings=ratings_df[ratings_df["user_id"] == user_saisi]
+                hist_data=user_ratings["rating"].value_counts().sort_index()
+                st.title("Réparition des notes moyennes")
+                st.line_chart(hist_data,color="#ff798c")
+                moyenne=user_ratings["rating"].astype(float).mean()
+                total=len(user_ratings["rating"])
+                st.write("Nombre de notes attribuées :", total)
+                st.write("Moyenne des notes attribuées :", moyenne)
+            else:
+                st.warning("L'ID de l'utilisateur n'existe pas.")
+        except ValueError:
+            st.error("Veuillez entrer un ID utilisateur valide (un entier).")
 
 elif choice=="Recommandations" :
- st.subheader("🎯 Recommandation personnalisée")
+    st.subheader("🎯 Recommandation personnalisée")
 
- user_id = st.number_input("Entrez votre identifiant utilisateur :", min_value=1, step=1)
+    user_id = st.number_input("Entrez votre identifiant utilisateur :", min_value=1, step=1)
 
- if st.button("Obtenir mes recommandations") and user_id:
-     try:
-         # Appel à l'API backend
-         response = requests.post(
-             f"http://127.0.0.1:8000/recommandation/{user_id}"  # Remplace par ton URL si besoin
-        
-         )
-         if response.status_code == 200:
-             data = response.json()
-             st.success(f"Recommandations pour l'utilisateur {data['id']}")
+    if st.button("Obtenir mes recommandations") and user_id:
+        try:
+            # Appel à l'API backend
+            response = requests.post(
+                f"http://127.0.0.1:8000/recommandation/{user_id}"  # Remplace par ton URL si besoin
+            
+            )
+            if response.status_code == 200:
+                data = response.json()
+                st.success(f"Recommandations pour l'utilisateur {data['id']}")
 
-             recommandations = pd.DataFrame(data["recommandation"])
-             st.dataframe(recommandations)
+                recommandations = pd.DataFrame(data["recommandation"])
+                st.dataframe(recommandations)
 
-         else:
-             st.error(f"Erreur {response.status_code} : {response.text}")
+            else:
+                st.error(f"Erreur {response.status_code} : {response.text}")
 
-     except Exception as e:
-         st.error(f"Erreur lors de l'appel API : {e}")
+        except Exception as e:
+            st.error(f"Erreur lors de l'appel API : {e}")
 
 
 

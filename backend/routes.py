@@ -13,7 +13,7 @@ app = FastAPI()
 router = APIRouter()
 
 DB_PATH = "data/movies.db"  
-conn = duckdb.connect(DB_PATH)
+conn = duckdb.connect(DB_PATH, read_only=True)
 
 
 @router.get('/movies', response_model=Dict[str,List[Movie]])
@@ -77,4 +77,3 @@ def get_statistics(genres : str, year : int):
             }
 
 #app.include_router(router)
-conn.close()
