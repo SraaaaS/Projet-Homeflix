@@ -30,6 +30,7 @@ st.sidebar.title("Navigateur")
 choice = st.sidebar.radio("Sélectionnez une section", ["Repartition des notes moyennes", 
                                                      "Evolution du nombre de films par année",
                                                      "Nombre de films par genre",
+                                                     "Statistiques par utilisateur",
                                                      "Recommandations",
                                                      "A propos"])
 
@@ -80,6 +81,26 @@ elif choice== "A propos" :
         st.markdown(contenu, unsafe_allow_html=True)
     except FileNotFoundError:
         st.error("CONSIGNE.md non trouvée")
+
+elif choice=="Statistiques par utilisateur":
+    ratings_df=conn.execute("SELECT user_id, rating FROM ratings").df()
+user_saisi=st.text_input("Entrez l'ID de l'utilisateur :", "")
+if user_saisi:
+    try:
+        user_saisi_int=int(user_saisi)
+        if user_saisi_int in ratings_df["user_id"].unique().astype(int):
+            user_ratings=ratings_df[ratings_df["user_id"] == user_saisi]
+            hist_data=user_ratings["rating"].value_counts().sort_index()
+            st.title("Réparition des notes moyennes")
+            st.bar_chart(hist_data,color="#FF00FF")
+            moyenne=user_ratings["rating"].astype(float).mean()
+            total=len(user_ratings["rating"])
+            st.write("Nombre de notes attribuées :", total)
+            st.write("Moyenne des notes attribuées :", moyenne)
+        else:
+            st.warning("L'ID de l'utilisateur n'existe pas.")
+    except ValueError:
+        st.error("Veuillez entrer un ID utilisateur valide (un entier).")
 
 elif choice=="Recommandations" :
  st.subheader("🎯 Recommandation personnalisée")
