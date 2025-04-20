@@ -30,6 +30,7 @@ st.sidebar.title("Navigateur")
 choice = st.sidebar.radio("Sélectionnez une section", ["Repartition des notes moyennes", 
                                                      "Evolution du nombre de films par année",
                                                      "Nombre de films par genre",
+                                                     "Recommandations",
                                                      "A propos"])
 
 if choice == "Repartition des notes moyennes":
