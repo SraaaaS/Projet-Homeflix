@@ -31,6 +31,7 @@ choice = st.sidebar.radio("Sélectionnez une section", ["Repartition des notes m
                                                      "Evolution du nombre de films par année",
                                                      "Nombre de films par genre",
                                                      "Statistiques par utilisateur",
+                                                     "Stats",
                                                      "Recommandations",
                                                      "A propos"])
 
@@ -125,6 +126,44 @@ elif choice=="Recommandations" :
             else:
                 st.error(f"Erreur {response.status_code} : {response.text}")
 
+        except Exception as e:
+            st.error(f"Erreur lors de l'appel API : {e}")
+
+
+
+elif choice=="Stats" :
+    st.subheader("📊 Statistiques par genre et année")
+
+    # --- Inputs utilisateur ---
+    genre = st.text_input("Entrez un genre (ex: Action, Drama, Thriller):", value="Action")
+    year = st.number_input("Choisissez une année:", min_value=1900, max_value=2100, step=1, value=2000)
+
+    if st.button("Afficher les statistiques"):
+        try:
+            url = f"http://127.0.0.1:8000/statistics/{genre}/{year}"
+            response = requests.get(url)
+
+            if response.status_code == 200:
+                data = response.json()['resultat']
+
+                st.markdown(f"### 🎬 Top films {genre.title()} en {year}")
+                best_films_df = pd.DataFrame(data["best_films"])
+                if not best_films_df.empty:
+                    st.table(best_films_df)
+                else:
+                    st.warning("Aucun film trouvé pour ces critères.")
+
+                st.markdown("### 🎭 Distribution des genres")
+                genre_dist_df = pd.DataFrame(data["distribution_genres"])
+                chart = alt.Chart(genre_dist_df).mark_bar().encode(
+                    x=alt.X("genres", sort='-y'),
+                    y="nombre",
+                    tooltip=["genres", "nombre"]
+                ).properties(width=700, height=400)
+                st.altair_chart(chart)
+
+            else:
+                st.error(f"Erreur {response.status_code} : {response.text}")
         except Exception as e:
             st.error(f"Erreur lors de l'appel API : {e}")
 

@@ -55,12 +55,13 @@ def get_statistics(genres : str, year : int):
     LIMIT 10
     """
 
-    requete_distrib_genres_films = """
+    requete_distrib_genres_films = f"""
         SELECT genre AS genres, COUNT(*) AS nombre
     FROM (
         SELECT UNNEST(STR_SPLIT(REPLACE(genres, '|', ', '), ', ')) AS genre
         FROM movies
         WHERE genres IS NOT NULL
+        AND strftime('%Y', CAST(release_date AS DATE)) = '{year}'
     )
     GROUP BY genre
     ORDER BY nombre DESC
