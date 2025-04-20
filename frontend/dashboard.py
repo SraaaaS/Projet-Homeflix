@@ -1,0 +1,111 @@
+
+import streamlit as st
+import duckdb
+import pandas as pd
+import seaborn as sns
+import requests
+import pandas as pd
+import altair as alt
+import numpy as np
+import matplotlib.pyplot as plt
+
+st.set_page_config(page_title="Homeflix Dashboard", layout="centered")
+st.title(" Homeflix Dashboard")
+
+conn = duckdb.connect('data/movies.db',  read_only=True)
+
+# Chargement des données
+ratings_df = conn.execute("SELECT user_id, film_id, rating FROM ratings").df()
+movies_df = conn.execute("SELECT * FROM movies").df()
+
+
+
+st.subheader("Réparition des notes moyennes")
+hist_values=np.histogram(movies_df["vote_average"])[0]
+st.bar_chart(hist_values, color="#9370DB")
+
+
+st.subheader("🎞️ Évolution du nombre de films par année")
+
+if 'release_date' in movies_df.columns:
+    # Conversion en datetime
+    movies_df["release_date"] = pd.to_datetime(movies_df["release_date"], errors="coerce")
+    # Extraction de l'année
+    movies_df["release_date"] = movies_df["release_date"].dt.year
+
+    films_par_annee = movies_df["release_date"].value_counts().sort_index()
+    st.bar_chart(films_par_annee)
+else:
+    st.warning("La colonne 'release_date' n'existe pas dans la table des films.")
+
+
+
+
+
+st.subheader("🎭 Nombre de films par genre")
+
+# Séparer les genres (séparés par virgule et éventuellement espaces)
+movies_df['genres'] = movies_df['genres'].fillna("")  # Pour éviter les NaN
+all_genres = movies_df['genres'].str.split(',\s*')  # Liste de listes
+
+# Aplatir la liste et compter
+from collections import Counter
+flat_genres = [genre for sublist in all_genres for genre in sublist if genre]  # Flatten + remove empty
+genre_counts = Counter(flat_genres)
+
+# Convertir en DataFrame
+genre_count_df = pd.DataFrame(genre_counts.items(), columns=['genre', 'nombre']).sort_values(by='nombre', ascending=False)
+
+st.bar_chart(genre_counts, color="#79ffdb")
+
+
+
+# st.subheader("🎯 Recommandation personnalisée")
+
+# user_id = st.number_input("Entrez votre identifiant utilisateur :", min_value=1, step=1)
+
+# if st.button("Obtenir mes recommandations") and user_id:
+#     try:
+#         # Appel à l'API backend
+#         response = requests.post(
+#             f"http://127.0.0.1:8000/recommandation/{user_id}"  # Remplace par ton URL si besoin
+        
+#         )
+#         if response.status_code == 200:
+#             data = response.json()
+#             st.success(f"Recommandations pour l'utilisateur {data['id']}")
+
+#             recommandations = pd.DataFrame(data["recommandation"])
+#             st.dataframe(recommandations)
+
+#         else:
+#             st.error(f"Erreur {response.status_code} : {response.text}")
+
+#     except Exception as e:
+#         st.error(f"Erreur lors de l'appel API : {e}")
+
+# conn.close()
+
+
+
+
+
+
+
+# st.sidebar.title("Navigation")
+# choice = st.sidebar.radio("Choisissez une section", ["Repartition des notes moyennes", 
+#                                                      "Evolution du nombre de films par année",
+#                                                      "Nombre de films par genre", 
+#                                                      "Recommandations"])
+
+# if choice == "Repartition des notes moyennes":
+#     eda(df)
+# elif choice == "Evolution du nombre de films par année":
+#     model, scaler, label_encoder = train_model(df)
+# elif choice == "Nombre de films par genre":
+#     model, scaler, label_encoder = train_model(df)
+#     predict(model, scaler, label_encoder)
+# elif choice=="Recommandations" :
+
+# logger.info("Application terminée")
+
