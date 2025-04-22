@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.decomposition import TruncatedSVD
 import duckdb
 from sklearn.preprocessing import MinMaxScaler
-from backend.schemas import ReponseDeRecommandation, ItemDeRecommandation
+from schemas import ReponseDeRecommandation, ItemDeRecommandation
 
 def recommend_movies(user_id: int) -> ReponseDeRecommandation:
     conn = duckdb.connect("data/movies.db",read_only=True)

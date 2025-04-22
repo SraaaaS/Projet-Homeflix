@@ -3,8 +3,8 @@ from typing import List, Optional, Dict
 import pandas as pd
 import duckdb   
 
-from backend.models import recommend_movies
-from backend.schemas import Movie, ReponseDeRecommandation, Statistics, Top_Movies, Genre_Distrib
+from models import recommend_movies
+from schemas import Movie, ReponseDeRecommandation, Statistics, Top_Movies, Genre_Distrib
 
 from fastapi import HTTPException
 import traceback

@@ -10,7 +10,17 @@ services:
       - flix_network    
     #
     volumes:
-      - ./data:/app/data  # Pour accéder à la BDD duckdb
+       - ./data/movies.db:/app/data/movies.db  # Pour accéder à la BDD duckdb
+    command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: backend/Dockerfile
+  #   volumes:
+  #     - .:/app
+  #   ports:
+  #     - "8000:8000"
+   # command: ["uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
   frontend:
     build:
@@ -21,7 +31,7 @@ services:
       - flix_network
       #
     volumes:
-      - ./data:/app/data  # Pour que Streamlit accède aussi à la BDD
+      - ./data/movies.db:/app/frontend/data/movies.db:ro
 
 networks:
   flix_network:
