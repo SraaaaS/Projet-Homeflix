@@ -7,7 +7,10 @@ services:
     ports:
       - "8000:8000"
     networks:
-      - flix_network
+      - flix_network    
+    #
+    volumes:
+      - ./data:/app/data  # Pour accéder à la BDD duckdb
 
   frontend:
     build:
@@ -16,13 +19,9 @@ services:
       - "8501:8501"
     networks:
       - flix_network
-
-  database:
-    image: duckdb/duckdb:latest  # Utilisation d'une image Docker existante
+      #
     volumes:
-      - ./data:/data  # Montage d'un volume pour stocker les données DuckDB
-    networks:
-      - flix_network
+      - ./data:/app/data  # Pour que Streamlit accède aussi à la BDD
 
 networks:
   flix_network:
