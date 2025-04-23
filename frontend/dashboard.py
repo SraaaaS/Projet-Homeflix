@@ -113,7 +113,7 @@ elif choice=="Recommandations" :
         try:
             # Appel à l'API backend
             response = requests.post(
-                f"http://127.0.0.1:8000/recommandation/{user_id}"  # Remplace par ton URL si besoin
+                f"http://backend:8000/recommandation/{user_id}"  # Remplace par ton URL si besoin
             
             )
             if response.status_code == 200:
@@ -140,7 +140,7 @@ elif choice=="Stats" :
 
     if st.button("Afficher les statistiques"):
         try:
-            url = f"http://127.0.0.1:8000/statistics/{genre}/{year}"
+            url = f"http://backend:8000/statistics/{genre}/{year}"
             response = requests.get(url)
 
             if response.status_code == 200:

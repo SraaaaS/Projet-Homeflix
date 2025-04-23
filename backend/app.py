@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from backend.routes import router
+from routes import router
 
 app = FastAPI(
     title = "API du Projet Homeflix",
@@ -12,3 +12,8 @@ app.include_router(router)
 @app.get("/")
 def root():
     return {"message" : "Bienvenue sur l'API Homeflix"}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

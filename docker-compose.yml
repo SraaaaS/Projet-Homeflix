@@ -3,26 +3,40 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./backend
+      context: .
+      dockerfile: Dockerfile.backend
     ports:
       - "8000:8000"
     networks:
-      - flix_network
+      - flix_network    
+    #
+    volumes:
+       - ./data/movies.db:/app/data/movies.db  # Pour accéder à la BDD duckdb
+    command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: backend/Dockerfile
+  #   volumes:
+  #     - .:/app
+  #   ports:
+  #     - "8000:8000"
+   # command: ["uvicorn", "backend.app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
   frontend:
     build:
-      context: ./frontend
+      context: .
+      dockerfile: Dockerfile.frontend
     ports:
       - "8501:8501"
     networks:
       - flix_network
-
-  database:
-    image: duckdb/duckdb:latest  # Utilisation d'une image Docker existante
+      #
     volumes:
-      - ./data:/data  # Montage d'un volume pour stocker les données DuckDB
-    networks:
-      - flix_network
+      - ./data/movies.db:/app/frontend/data/movies.db:ro
+      #./data:/app/data
+    depends_on:
+    - backend
 
 networks:
   flix_network:
