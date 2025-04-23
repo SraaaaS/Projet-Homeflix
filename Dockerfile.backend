@@ -47,13 +47,14 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copier le code de l'application
-WORKDIR /app
-COPY . .
+WORKDIR /app/backend
+COPY backend/ .
+COPY data/ ./data
 
 # Installer les dépendances Python
 RUN pip install --no-cache-dir -r requirements.txt
 
-ENV PYTHONPATH=/app
+#ENV PYTHONPATH=/app
 
 
 # # Commande par défaut à exécuter pour lancer l'application

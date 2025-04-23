@@ -3,7 +3,8 @@ version: '3.8'
 services:
   backend:
     build:
-      context: ./backend
+      context: .
+      dockerfile: Dockerfile.backend
     ports:
       - "8000:8000"
     networks:
@@ -24,7 +25,8 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: .
+      dockerfile: Dockerfile.frontend
     ports:
       - "8501:8501"
     networks:
@@ -32,6 +34,9 @@ services:
       #
     volumes:
       - ./data/movies.db:/app/frontend/data/movies.db:ro
+      #./data:/app/data
+    depends_on:
+    - backend
 
 networks:
   flix_network:
