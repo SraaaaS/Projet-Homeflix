@@ -37,15 +37,6 @@ def post_recommandations(id_user : int):
 @router.get("/statistics/{genres}/{year}", response_model=Dict[str, Statistics])
 def get_statistics(genres : str, year : int):
 
-    #ajout de condition sur la date de sortie des films considérés par rapport à l'énoncé
-    # requete_meilleurs_films = f"""
-    # SELECT title, vote_average
-    # FROM movies 
-    # WHERE strftime('%Y', CAST(release_date AS DATE) )= '{year}'
-    # ORDER BY vote_average DESC
-    # LIMIT 10
-    # """
-
     requete_meilleurs_films = f"""
     SELECT title, vote_average AS rating_average
     FROM movies 
@@ -76,5 +67,3 @@ def get_statistics(genres : str, year : int):
              "best_films" :  best_films.to_dict(orient="records"),
              "distribution_genres" : genre_distrib.to_dict(orient="records") }
             }
-
-#app.include_router(router)
