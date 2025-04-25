@@ -3,60 +3,16 @@ import numpy as np
 from sklearn.decomposition import TruncatedSVD
 import duckdb
 from sklearn.preprocessing import MinMaxScaler
-from backend.schemas import ReponseDeRecommandation
-
-
-
-# def recommend_movies(user_id):
-#     if user_id not in pred_df.index:
-#         print(f"L'utilisateur {user_id} n'existe pas dans les prédictions.")
-#         return []
-    
-#     predictions = pred_df.loc[user_id]
-#     films_deja_notes = ratings_df[ratings_df['user_id'] == user_id]['film_id'].tolist()
-#     vrai_predictions = predictions.drop(index=films_deja_notes) #On garde seulement les films non notés
-
-#     if vrai_predictions.empty:
-#         print(f"Aucune recommandation disponible pour l'utilisateur {user_id}.")
-#         return []
-
-#     top10 = vrai_predictions.sort_values(ascending=False).head(10) #On garde le top 10 des recommandations
-
-#     reco_df = pd.DataFrame({
-#         'film_id': top10.index,
-#         'predicted_rating': top10.values
-#     })
-
-#     reco_df['film_id'] = reco_df['film_id'].astype(int) #Sécurité
-#     movies_df['id'] = movies_df['id'].astype(int) #Sécurité
-
-#     reco_df2 = reco_df.merge(movies_df, left_on='film_id', right_on='id', how='left')
-#     reco_df2=reco_df2[['film_id', 'predicted_rating','title']]
-#     print(reco_df2)
-#     print(int(reco_df2['film_id'][1]))
-#     recommandations=[]
-#     for i in range(10): #Passage en liste de Recommandation
-#         recommandations = recommandations.append(
-#             ReponseDeRecommandation(
-#             id=int(reco_df2['film_id'][i]),
-#             title=reco_df2['title'][i],
-#             rating_predicted=float(reco_df2['predicted_rating'][i])
-#         )
-#         )
-#         #Recommande
-
-#     return recommandations
-    
-from backend.schemas import ReponseDeRecommandation, ItemDeRecommandation
+from schemas import ReponseDeRecommandation, ItemDeRecommandation
 
 def recommend_movies(user_id: int) -> ReponseDeRecommandation:
-    conn = duckdb.connect("data/movies.db")
+    conn = duckdb.connect("data/movies.db",read_only=True)
 
     ratings_df = conn.execute("SELECT user_id, film_id, rating FROM ratings").df()
     movies_df = conn.execute("SELECT id, title FROM movies").df()
     ratings_df = ratings_df[ratings_df["user_id"].isin(ratings_df["user_id"].unique()[:10000])]
     ratings_df["film_id"] = ratings_df["film_id"].astype(int) #Sécurité
-    movies_df["id"] = movies_df["id"].astype(int) #Sécurité
+    movies_df["id"] = movies_df["id"].astype(int) #Sécurité 
     ratings_df["user_id"] =  ratings_df["user_id"].astype(int)#sara
     ratings_df = ratings_df[ratings_df["film_id"].isin(movies_df["id"])] #On garde les notes des films qui sont dans notre base
 

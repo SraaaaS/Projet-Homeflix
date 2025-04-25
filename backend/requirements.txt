@@ -54,13 +54,15 @@ PyQtWebEngine==5.15.7
 PyQtWebEngine-Qt5==5.15.2
 python-dateutil==2.9.0.post0
 pytz==2025.2
-pywin32==310
+# Si c'est un environnement Windows, installer pywin32
+pywin32; sys_platform == 'win32'
 PyYAML==6.0.2
 qtstylish==0.1.5
 referencing==0.36.2
 requests==2.32.3
 rpds-py==0.24.0
 scipy==1.15.2
+scikit-learn
 setuptools==78.1.0
 six==1.17.0
 smmap==5.0.2
