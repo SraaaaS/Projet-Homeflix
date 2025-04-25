@@ -84,7 +84,7 @@ elif choice=="Activité D’un Utilisateur":
     st.subheader("👩‍💻 Activité D’un Utilisateur")
     ratings_df=conn.execute("SELECT user_id, rating FROM ratings").df() 
     user_saisi=st.text_input("Entrez l'ID de l'utilisateur :", "")
-    if st.button("Obtenir les statistiques de l'utilisateur") and user_saisi:
+    if st.button("Obtenir les activités de l'utilisateur") and user_saisi:
         try:
             user_saisi_int=int(user_saisi)
             if user_saisi_int in ratings_df["user_id"].unique().astype(int):
@@ -145,7 +145,7 @@ elif choice=="Outils De Recommandation De Films" :
 
     user_id = st.number_input("Entrez votre identifiant utilisateur :", min_value=1, step=1)
 
-    if st.button("Obtenir mes recommandations") and user_id:
+    if st.button("Obtenir les recommandations") and user_id:
         try:
             # Appel à l'API backend
             response = requests.post(
