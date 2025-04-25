@@ -75,5 +75,3 @@ La barre latérale permet de choisir parmi plusieurs sections :
 
 
     Dû à la combinaison des fichiers de ratings et de movies, les ids d'utilisateurs possibles sont plus restreints, voici une liste alétoire et non exhaustive d'id valides à tester : `6, 47, 73, 343, 971, 1328, 1411, 2568, 2609`
-
-
