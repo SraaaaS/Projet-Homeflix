@@ -1,5 +1,4 @@
-# 🎬📽️ Homeflix
-# — Application de Recommandation de films en ligne
+# 🎬📽️ Homeflix : Application de Recommandation de films en ligne
 
 
 Bienvenue sur Homeflix, une plateforme de recommandation de films basée sur le filtrage collaboratif, développée pour fournir à l'utilisateur une expérience personnalisée à travers l'analyse de données réelles d'autres utilisateurs. Le projet est conteneurisé avec Docker Compose et permet une visualisation interactive via une interface Streamlit.
