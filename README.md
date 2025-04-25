@@ -6,10 +6,10 @@ Bienvenue sur Homeflix, une plateforme de recommandation de films basée sur le 
 ---
 ## 🧭 Sommaire
 - [Objectifs du Projet](###Objectifs-du-Projet)
-- [Architecture Globale](#architecture-Globale)
-- [Structure du Projet](#Structure-du-Projet-Globale)
+- [Architecture Globale](#Architecture-Globale)
+- [Structure du Projet](#Structure-du-Projet)
 - [Installation](#Installation)
-- [Navigation Dans l'Application](#Navigation-Dans-l'Application)
+- [Navigation Dans l'Application](#Navigation-Dans-l-Application)
 - [Auteurs](#Auteurs)
 
   
