@@ -21,29 +21,34 @@ movies_df = conn.execute("SELECT * FROM movies").df()
 
 
 
-
-
-
-
-
 st.sidebar.title("Navigateur")
-choice = st.sidebar.radio("Sélectionnez une section", ["Repartition des notes moyennes", 
-                                                     "Evolution du nombre de films par année",
-                                                     "Nombre de films par genre",
-                                                     "Statistiques par utilisateur",
-                                                     "Stats",
-                                                     "Recommandations",
-                                                     "A propos"])
+choice = st.sidebar.radio("Sélectionnez une section", ["Accueil", 
+                                                      "Distribution Des Notes Moyennes", 
+                                                     "Evolution De La Fréquence Annuel Des Films",
+                                                     "Fréquence Des Films Par Genre",
+                                                     "Activité D’un Utilisateur",
+                                                     "Statistiques Par Genre Et Année",
+                                                     "Outils De Recommandation Personnalisé",
+                                                     "A Propos Du Projet Homeflix"]) 
 
-if choice == "Repartition des notes moyennes":
-    st.subheader("Répartition des notes moyennes")
+
+if choice== "Accueil":
+  st.subheader("🏡 Accueil")
+    try:
+        with open("README.md", "r", encoding="utf-8") as f:
+            contenu = f.read()
+        st.markdown(contenu, unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.error("README.md non trouvé")
+
+elif choice == "Distribution Des Notes Moyennes":
+    st.subheader("Distribution Des Notes Moyennes")
     hist_values=np.histogram(movies_df["vote_average"])[0]
     st.bar_chart(hist_values, color="#9370DB")
 
 
-
-elif choice == "Evolution du nombre de films par année":
-    st.subheader("🎞️ Évolution du nombre de films par année")
+elif choice == "Evolution De La Fréquence Annuel Des Films":
+    st.subheader("〽️ Evolution De La Fréquence Annuel Des Films")
     if 'release_date' in movies_df.columns:
         # Conversion en datetime
         movies_df["release_date"] = pd.to_datetime(movies_df["release_date"], errors="coerce")
@@ -57,8 +62,8 @@ elif choice == "Evolution du nombre de films par année":
 
 
     
-elif choice == "Nombre de films par genre":
-    st.subheader("🎭 Nombre de films par genre")
+elif choice == "Fréquence Des Films Par Genre":
+    st.subheader("🎭 Fréquence Des Films Par Genre")
 
     # Séparer les genres (séparés par virgule et éventuellement espaces)
     movies_df['genres'] = movies_df['genres'].fillna("")  # Pour éviter les NaN
@@ -74,17 +79,9 @@ elif choice == "Nombre de films par genre":
 
     st.bar_chart(genre_counts, color="#79ffdb")
 
-elif choice== "A propos" :
-    st.subheader("📘 À propos de Homeflix")
-    try:
-        with open("CONSIGNE.md", "r", encoding="utf-8") as f:
-            contenu = f.read()
-        st.markdown(contenu, unsafe_allow_html=True)
-    except FileNotFoundError:
-        st.error("CONSIGNE.md non trouvée")
 
-elif choice=="Statistiques par utilisateur":
-    st.subheader("Statistiques par utilisateur")
+elif choice=="Activité D’un Utilisateur":
+    st.subheader("👩‍💻 Activité D’un Utilisateur")
     ratings_df=conn.execute("SELECT user_id, rating FROM ratings").df() 
     user_saisi=st.text_input("Entrez l'ID de l'utilisateur :", "")
     if st.button("Obtenir les statistiques de l'utilisateur") and user_saisi:
@@ -104,35 +101,10 @@ elif choice=="Statistiques par utilisateur":
         except ValueError:
             st.error("Veuillez entrer un ID utilisateur valide (un entier).")
 
-elif choice=="Recommandations" :
-    st.subheader("🎯 Recommandation personnalisée")
-
-    user_id = st.number_input("Entrez votre identifiant utilisateur :", min_value=1, step=1)
-
-    if st.button("Obtenir mes recommandations") and user_id:
-        try:
-            # Appel à l'API backend
-            response = requests.post(
-                f"http://backend:8000/recommandation/{user_id}"  # Remplace par ton URL si besoin
-            
-            )
-            if response.status_code == 200:
-                data = response.json()
-                st.success(f"Recommandations pour l'utilisateur {data['id']}")
-
-                recommandations = pd.DataFrame(data["recommandation"])
-                st.dataframe(recommandations)
-
-            else:
-                st.error(f"Erreur {response.status_code} : {response.text}")
-
-        except Exception as e:
-            st.error(f"Erreur lors de l'appel API : {e}")
 
 
-
-elif choice=="Stats" :
-    st.subheader("📊 Statistiques par genre et année")
+elif choice=="Statistiques Par Genre Et Année" :
+    st.subheader("📊 Statistiques Par Genre Et Année")
 
     # --- Inputs utilisateur ---
     genre = st.text_input("Entrez un genre (ex: Action, Drama, Thriller):", value="Action")
@@ -168,6 +140,40 @@ elif choice=="Stats" :
             st.error(f"Erreur lors de l'appel API : {e}")
 
 
+elif choice=="Outils De Recommandation De Films" :
+    st.subheader("🎯 Outils De Recommandation Personnalisé")
+
+    user_id = st.number_input("Entrez votre identifiant utilisateur :", min_value=1, step=1)
+
+    if st.button("Obtenir mes recommandations") and user_id:
+        try:
+            # Appel à l'API backend
+            response = requests.post(
+                f"http://backend:8000/recommandation/{user_id}"  # Remplace par ton URL si besoin
+            
+            )
+            if response.status_code == 200:
+                data = response.json()
+                st.success(f"Recommandations pour l'utilisateur {data['id']}")
+
+                recommandations = pd.DataFrame(data["recommandation"])
+                st.dataframe(recommandations)
+
+            else:
+                st.error(f"Erreur {response.status_code} : {response.text}")
+
+        except Exception as e:
+            st.error(f"Erreur lors de l'appel API : {e}")
+
+
+elif choice== "A Propos Du Projet Homeflix" :
+    st.subheader("❔ À Propos Du Projet Homeflix")
+    try:
+        with open("CONSIGNE.md", "r", encoding="utf-8") as f:
+            contenu = f.read()
+        st.markdown(contenu, unsafe_allow_html=True)
+    except FileNotFoundError:
+        st.error("CONSIGNE.md non trouvée")
 
 logger.info("Application terminée")
 
