@@ -7,12 +7,12 @@ Bienvenue sur Homeflix, une plateforme de recommandation de films basée sur le 
 ## 🧭 Sommaire
 - [Objectifs du Projet](###Objectifs-du-Projet)
 - [Architecture Globale](#Architecture-Globale)
-- [Structure du Projet](#Structure-du-Projet)
+- [Structure du Projet](###Structure-du-Projet)
 - [Installation](#Installation)
 - [Navigation Dans l'Application](#Navigation-Dans-l'Application)
 - [Auteurs](#Auteurs)
 
---  
+---  
 ### Objectifs du Projet
 
 - Proposer des recommandations de films personnalisées basées sur les goûts similaires d’autres utilisateurs.
@@ -34,8 +34,11 @@ Le système est divisé en 3 services distincts :
 
 ### Structure du Projet
 ├── backend
+
 |   ├── __init__.py
+
 │   ├── app.py
+
 │   ├── database.py
 │   ├── recup_films.py
 │   ├── recup_genre.py
