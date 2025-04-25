@@ -31,7 +31,8 @@ Le système est divisé en 3 services distincts :
 - Backend (FastAPI) : Fournit l'API REST et intègre le modèle SVD pour les recommandations.
 - Frontend (Streamlit) : Délivre les visualisations graphiques et les sorties de requete au travers de son interface utilisateur.
 - Conteneurisation (Docker) : Facilite le déploiement de l'application.
-
+- 
+---
 # Structure du Projet
 ```
 ├── backend
@@ -80,24 +81,24 @@ http://localhost:8501
 Pour l'API backend se rendre sur :  
 http://localhost:8000/docs
 
----
+
 ## Navigation Dans l'Application
 
 Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs sections :
 
 1. **Distribution Des Notes Moyennes**  
 
-    L'histogramme de la distribution globale des notes moyennes données aux films par les utilisateurs de TMDB.
+    L'histogramme de la distribution globale des notes moyennes données aux films par les utilisateurs de TMDB.  
    
 
 3. **Evolution De La Fréquence Annuel Des Films** 
 
-    L'histogramme de la frequence des films sortis selon l'année considérée.
+    L'histogramme de la frequence des films sortis selon l'année considérée.  
    
 
 4. **Fréquence Des Films Par Genre**  
 
-    L'histogramme de la répartition des films selon les genres cinématographiques considérés.
+    L'histogramme de la répartition des films selon les genres cinématographiques considérés.  
    
 
 6. **Activité D’un Utilisateur**  
@@ -105,18 +106,18 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
     Entrez un id utilisateur : c'est un nombre entre 1 et 270896. En cliquant sur "Obtenir les activités de l'utilisateur" s'affichent:
    - le graphe de la répartion des notes moynnes attribuées par cet utilisateur,
    - le nombre total de notes qu'il a attribué ainsi que
-   - la moyenne de ces attributions de notes.
+   - la moyenne de ces attributions de notes.  
      
 
-###7. **Statistiques Par Genre Et Année**###  
+7. **Statistiques Par Genre Et Année**  
 
     Entrez un genre (par exemple Action, Drama, Thriller, Comedy mais le nom de genre doit etre en anglais) et une année (entre 1933 et 2026). Vous obtenez ainsi les meilleurs films pour le genre et l'année choisis mais également la distribution des genres cinématographiques pour l'année demandée.  
 
     L'API est ici:
-        `GET http://backend:8000/statistics/{genre}/{year}`
-   
+        `GET http://backend:8000/statistics/{genre}/{year}`  
 
-###9. **Outils De Recommandation Personnalisé**### 
+   
+8. **Outils De Recommandation Personnalisé**
 
     Entrez un id utilisateur et recevez la liste personnalisée des recommandations de films obtenue par filtrage collaboratif et modèle SVD. Sur cette liste de recommandations figure egalement la predicion des notes que l'utilisateur attribuerait à chacun de ces films recommandés.  
     
