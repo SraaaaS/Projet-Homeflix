@@ -32,7 +32,7 @@ Le système est divisé en 3 services distincts :
 - Frontend (Streamlit) : Délivre les visualisations graphiques et les sorties de requete au travers de son interface utilisateur.
 - Conteneurisation (Docker) : Facilite le déploiement de l'application.
 - 
----
+ 
 # Structure du Projet
 ```
 ├── backend
@@ -135,9 +135,9 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
 ---
 # 👩‍💼Auteurs👨‍💼
 
-Sraaaas:  
+Sraaaas :  
 https://github.com/SraaaaS
 
-Lucawsss:  
+lucawsss :  
 https://github.com/lucaswsss
    
