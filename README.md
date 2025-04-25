@@ -2,7 +2,7 @@
 
 ## Système de Recommandation de Films
 
-Bienvenue sur Homelifx, une plateforme de recommandation de films basée sur le filtrage collaboratif, développée pour fournir à l'utilisateur une expérience personnalisée à travers l'analyse de données réelles d'autres utilisateurs. Le projet est conteneurisé avec Docker Compose et permet une visualisation interactive via une interface Streamlit.
+Bienvenue sur Homeflix, une plateforme de recommandation de films basée sur le filtrage collaboratif, développée pour fournir à l'utilisateur une expérience personnalisée à travers l'analyse de données réelles d'autres utilisateurs. Le projet est conteneurisé avec Docker Compose et permet une visualisation interactive via une interface Streamlit.
 
 ---
 
@@ -31,11 +31,11 @@ Le système est divisé en 3 services distincts :
 
 ### Installation
 
-Après avoir cloner le dépot Git, il suffira d'utiliser docker-compose de telles manière pour lancer l'application : 
+Après avoir cloner le dépot Git, il suffira d'utiliser docker-compose de la façon suivante pour lancer l'application : 
 
 `docker-compose up --build`
 
-Ainsi l'application sera disponible à l'adresse suivante :
+Ainsi l'application sera disponible à l'adresse ci-dessous :
 
 http://localhost:8501
 
