@@ -9,7 +9,7 @@ Bienvenue sur Homeflix, une plateforme de recommandation de films basée sur le 
 - [Architecture Globale](#Architecture-Globale)
 - [Structure du Projet](###Structure-du-Projet)
 - [Installation](#Installation)
-- [Navigation Dans l'Application](#Navigation-Dans-l'Application)
+- [Navigation Dans l'Application](#Navigation-Dans-lApplication)
 - [Auteurs](#Auteurs)
 
 ---  
@@ -33,12 +33,10 @@ Le système est divisé en 3 services distincts :
 - Conteneurisation (Docker) : Facilite le déploiement de l'application.
 
 ### Structure du Projet
+```
 ├── backend
-
 |   ├── __init__.py
-
 │   ├── app.py
-
 │   ├── database.py
 │   ├── recup_films.py
 │   ├── recup_genre.py
@@ -57,7 +55,7 @@ Le système est divisé en 3 services distincts :
 ├── Dockerfile.backend
 ├── Dockerfile.frontend
 └── README.md
-
+```
 ---
 
 ## Lancer le Projet
