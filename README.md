@@ -134,11 +134,13 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
     Cette partie fournit le détail de l'ensemble des consignes, exigences et attendus requis par l'enseignant pour ce projet de fin d'année de Master.
 
 ---
-# 👩‍💼👨‍💼Auteurs
+# 👩‍💼Auteurs👨‍💼
 
 Sraaaas
+
 https://github.com/SraaaaS
 
 Lucawsss
+
 https://github.com/lucaswsss
    
