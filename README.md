@@ -31,7 +31,7 @@ Le système est divisé en 3 services distincts :
 - Backend (FastAPI) : Fournit l'API REST et intègre le modèle SVD pour les recommandations.
 - Frontend (Streamlit) : Délivre les visualisations graphiques et les sorties de requete au travers de son interface utilisateur.
 - Conteneurisation (Docker) : Facilite le déploiement de l'application.
-- 
+  
  
 # Structure du Projet
 ```
