@@ -110,7 +110,7 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
    - la moyenne de ces attributions de notes.
      
 
-7. **Statistiques Par Genre Et Année**  
+###7. **Statistiques Par Genre Et Année**  
 
     Entrez un genre (par exemple Action, Drama, Thriller, Comedy mais le nom de genre doit etre en anglais) et une année (entre 1933 et 2026). Vous obtenez ainsi les meilleurs films pour le genre et l'année choisis mais également la distribution des genres cinématographiques pour l'année demandée.  
 
@@ -118,7 +118,7 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
         `GET http://backend:8000/statistics/{genre}/{year}`
    
 
-9. **Outils De Recommandation Personnalisé**  
+###9. **Outils De Recommandation Personnalisé**  
 
     Entrez un id utilisateur et recevez la liste personnalisée des recommandations de films obtenue par filtrage collaboratif et modèle SVD. Sur cette liste de recommandations figure egalement la predicion des notes que l'utilisateur attribuerait à chacun de ces films recommandés.  
     
@@ -136,11 +136,9 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
 ---
 # 👩‍💼Auteurs👨‍💼
 
-Sraaaas
-
+Sraaaas  
 https://github.com/SraaaaS
 
-Lucawsss
-
+Lucawsss  
 https://github.com/lucaswsss
    
