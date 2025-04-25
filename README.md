@@ -4,7 +4,7 @@
 Bienvenue sur Homeflix, une plateforme de recommandation de films basée sur le filtrage collaboratif, développée pour fournir à l'utilisateur une expérience personnalisée à travers l'analyse de données réelles d'autres utilisateurs. Le projet est conteneurisé avec Docker Compose et permet une visualisation interactive via une interface Streamlit.
 
 ---
-## 🧭 Sommaire
+# 🧭 Sommaire
 - [Objectifs du Projet](###Objectifs-du-Projet)
 - [Architecture Globale](#Architecture-Globale)
 - [Structure du Projet](###Structure-du-Projet)
@@ -13,7 +13,7 @@ Bienvenue sur Homeflix, une plateforme de recommandation de films basée sur le 
 - [Auteurs](#Auteurs)
 
 ---  
-### Objectifs du Projet
+# Objectifs du Projet
 
 - Proposer des recommandations de films personnalisées basées sur les goûts similaires d’autres utilisateurs.
 - Réaliser ce filtrage collaboratif par uilisation d'un modèle SVD.
@@ -22,7 +22,7 @@ Bienvenue sur Homeflix, une plateforme de recommandation de films basée sur le 
 
 ---
 
-### Architecture Globale
+# Architecture Globale
 
 Le système est divisé en 3 services distincts :
 
@@ -32,7 +32,7 @@ Le système est divisé en 3 services distincts :
 - Frontend (Streamlit) : Délivre les visualisations graphiques et les sorties de requete au travers de son interface utilisateur.
 - Conteneurisation (Docker) : Facilite le déploiement de l'application.
 
-### Structure du Projet
+# Structure du Projet
 ```
 ├── backend
 |   ├── __init__.py
@@ -58,10 +58,10 @@ Le système est divisé en 3 services distincts :
 ```
 ---
 
-## Lancer le Projet
+# Lancer le Projet
 
 
-### Installation
+## Installation
 
 Assurez-vous d’avoir Docker et Docker Compose installés sur votre machine.
 
@@ -83,7 +83,7 @@ Pour l'API backend se rendre sur :
 http://localhost:8000/docs
 
 
-### Navigation Dans l'Application
+## Navigation Dans l'Application
 
 Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs sections :
 
@@ -134,7 +134,7 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
     Cette partie fournit le détail de l'ensemble des consignes, exigences et attendus requis par l'enseignant pour ce projet de fin d'année de Master.
 
 ---
-## 👩‍💼👨‍💼Auteurs
+# 👩‍💼👨‍💼Auteurs
 
 Sraaaas
 https://github.com/SraaaaS
