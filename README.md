@@ -5,14 +5,14 @@ Bienvenue sur Homeflix, une plateforme de recommandation de films basée sur le 
 
 ---
 ## 🧭 Sommaire
-- [Ojectifs du Projet](### Objectifs du Projet)
-- [Architecture Globale](#Architecture Globale)
-- [Structure du Projet](#Structure du Projet Globale)
+- [Objectifs du Projet](###Objectifs-du-Projet)
+- [Architecture Globale](#architecture-Globale)
+- [Structure du Projet](#Structure-du-Projet-Globale)
 - [Installation](#Installation)
-- [Navigation Dans l'Application](#Navigation Dans l'Application)
-- [Auteurs](#auteurs)
+- [Navigation Dans l'Application](#Navigation-Dans-l'Application)
+- [Auteurs](#Auteurs)
 
-- 
+  
 ### Objectifs du Projet
 
 - Proposer des recommandations de films personnalisées basées sur les goûts similaires d’autres utilisateurs.
@@ -89,30 +89,35 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
 1. **Distribution Des Notes Moyennes**  
 
     L'histogramme de la distribution globale des notes moyennes données aux films par les utilisateurs de TMDB.
+   
 
-2. **Evolution De La Fréquence Annuel Des Films** 
+3. **Evolution De La Fréquence Annuel Des Films** 
 
     L'histogramme de la frequence des films sortis selon l'année considérée.
+   
 
-3. **Fréquence Des Films Par Genre**  
+4. **Fréquence Des Films Par Genre**  
 
     L'histogramme de la répartition des films selon les genres cinématographiques considérés.
+   
 
-4. **Activité D’un Utilisateur**  
+6. **Activité D’un Utilisateur**  
   
     Entrez un id utilisateur : c'est un nombre entre 1 et 270896. En cliquant sur "Obtenir les activités de l'utilisateur" s'affichent:
    - le graphe de la répartion des notes moynnes attribuées par cet utilisateur,
    - le nombre total de notes qu'il a attribué ainsi que
    - la moyenne de ces attributions de notes.
+     
 
-6. **Statistiques Par Genre Et Année**  
+7. **Statistiques Par Genre Et Année**  
 
     Entrez un genre (par exemple Action, Drama, Thriller, Comedy mais le nom de genre doit etre en anglais) et une année (entre 1933 et 2026). Vous obtenez ainsi les meilleurs films pour le genre et l'année choisis mais également la distribution des genres cinématographiques pour l'année demandée.  
 
     L'API est ici:
         `GET http://backend:8000/statistics/{genre}/{year}`
+   
 
-7. **Outils De Recommandation Personnalisé**  
+9. **Outils De Recommandation Personnalisé**  
 
     Entrez un id utilisateur et recevez la liste personnalisée des recommandations de films obtenue par filtrage collaboratif et modèle SVD. Sur cette liste de recommandations figure egalement la predicion des notes que l'utilisateur attribuerait à chacun de ces films recommandés.  
     
@@ -122,10 +127,12 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
     Dû à la combinaison des fichiers de ratings et de movies, les id d'utilisateurs possibles sont plus restreints, voici une liste alétoire et non exhaustive d'id valides à tester : `6, 47, 73, 343, 971, 1328, 1411, 2568, 2609`.
    
 
-9. **A Propos Du Projet Homeflix**
+
+10. **A Propos Du Projet Homeflix**
 
     Cette partie fournit le détail de l'ensemble des consignes, exigences et attendus requis par l'enseignant pour ce projet de fin d'année de Master.
 
+---
 ## 👩‍💼👨‍💼Auteurs
 
 Sraaaas
