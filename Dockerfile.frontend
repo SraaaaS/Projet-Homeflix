@@ -10,7 +10,8 @@ WORKDIR /app/frontend
 
 COPY frontend/ .
 COPY data/ /app/frontend/data
-
+COPY README.md ../README.md
+COPY CONSIGNE.md /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8501

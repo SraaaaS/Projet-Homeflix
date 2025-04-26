@@ -68,7 +68,8 @@ La barre latérale permet de choisir parmi plusieurs sections :
 
 6. **Recommandations**  
 
-    Entrez un id d'utitilisateur et recevez une liste de recommandations grâce au filtrage collaboratif et SVD.  
+    Entrez un ID utilisateur et recevez la liste personnalisée des recommandations de films obtenue par filtrage collaboratif et modèle SVD. Sur cette liste de recommandations figure egalement la prediction des notes que l'utilisateur attribuerait à chacun des films qui lui sont recommandés.  
+
     
     On utilise ici l'API :
         `POST HTTP://backend:8000/recommandation/{user_id}`  

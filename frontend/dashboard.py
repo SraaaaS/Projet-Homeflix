@@ -8,10 +8,12 @@ import altair as alt
 import numpy as np
 import matplotlib.pyplot as plt
 from loguru import logger
+from pathlib import Path
 
 
-st.set_page_config(page_title="Homeflix Dashboard", layout="centered")
-st.title(" Homeflix Dashboard")
+st.set_page_config(page_title="Homeflix : Tableau de Bord", layout="centered")
+st.title(" Homeflix : Tableau de Bord")
+
 
 conn = duckdb.connect('data/movies.db',  read_only=True)
 
@@ -28,27 +30,31 @@ choice = st.sidebar.radio("Sélectionnez une section", ["Accueil",
                                                      "Fréquence Des Films Par Genre",
                                                      "Activité D’un Utilisateur",
                                                      "Statistiques Par Genre Et Année",
-                                                     "Outils De Recommandation Personnalisé",
+                                                     "Outils De Recommandations Personnalisées",
                                                      "A Propos Du Projet Homeflix"]) 
 
 
 if choice== "Accueil":
-  st.subheader("🏡 Accueil")
+    
+    st.subheader("🏡 Accueil")
     try:
-        with open("README.md", "r", encoding="utf-8") as f:
+        with open("../README.md", "r", encoding="utf-8") as f:
             contenu = f.read()
         st.markdown(contenu, unsafe_allow_html=True)
     except FileNotFoundError:
         st.error("README.md non trouvé")
 
+
 elif choice == "Distribution Des Notes Moyennes":
     st.subheader("Distribution Des Notes Moyennes")
+    st.write("Distribution globale des notes moyennes données aux films par les utilisateurs de la plateforme TMDB.")
     hist_values=np.histogram(movies_df["vote_average"])[0]
     st.bar_chart(hist_values, color="#9370DB")
 
 
 elif choice == "Evolution De La Fréquence Annuel Des Films":
     st.subheader("〽️ Evolution De La Fréquence Annuel Des Films")
+    st.write("Histogramme de la frequence des films sortis au cours des années.")
     if 'release_date' in movies_df.columns:
         # Conversion en datetime
         movies_df["release_date"] = pd.to_datetime(movies_df["release_date"], errors="coerce")
@@ -64,7 +70,7 @@ elif choice == "Evolution De La Fréquence Annuel Des Films":
     
 elif choice == "Fréquence Des Films Par Genre":
     st.subheader("🎭 Fréquence Des Films Par Genre")
-
+    st.write("Histogramme de la répartition des films selon les genres cinématographiques ")
     # Séparer les genres (séparés par virgule et éventuellement espaces)
     movies_df['genres'] = movies_df['genres'].fillna("")  # Pour éviter les NaN
     all_genres = movies_df['genres'].str.split(',\s*')  # Liste de listes
@@ -82,6 +88,10 @@ elif choice == "Fréquence Des Films Par Genre":
 
 elif choice=="Activité D’un Utilisateur":
     st.subheader("👩‍💻 Activité D’un Utilisateur")
+    st.write("""En entrant un ID utilisateur (un nombre entre 1 et 270896) puis en cliquant sur "Obtenir les activités de l'utilisateur" vous obtiendrez :\n
+   - le graphe de la répartion des notes moynnes attribuées par cet utilisateur,\n
+   - le nombre total de notes qu'il a attribué ainsi que\n
+   - la moyenne de ces attributions de notes.""")
     ratings_df=conn.execute("SELECT user_id, rating FROM ratings").df() 
     user_saisi=st.text_input("Entrez l'ID de l'utilisateur :", "")
     if st.button("Obtenir les activités de l'utilisateur") and user_saisi:
@@ -105,9 +115,13 @@ elif choice=="Activité D’un Utilisateur":
 
 elif choice=="Statistiques Par Genre Et Année" :
     st.subheader("📊 Statistiques Par Genre Et Année")
+    st.write("Entrez un genre (par exemple Action, Drama, Thriller, Comedy mais le " \
+    "nom de genre doit etre en anglais) et une année (entre 1933 et 2026). " \
+    "Vous obtenez ainsi les meilleurs films pour le genre et l'année choisis mais " \
+    "également la distribution des genres cinématographiques pour l'année demandée.")
 
     # --- Inputs utilisateur ---
-    genre = st.text_input("Entrez un genre (ex: Action, Drama, Thriller):", value="Action")
+    genre = st.text_input("Entrez un genre :", value="Action")
     year = st.number_input("Choisissez une année:", min_value=1900, max_value=2100, step=1, value=2000)
 
     if st.button("Afficher les statistiques"):
@@ -140,10 +154,15 @@ elif choice=="Statistiques Par Genre Et Année" :
             st.error(f"Erreur lors de l'appel API : {e}")
 
 
-elif choice=="Outils De Recommandation De Films" :
-    st.subheader("🎯 Outils De Recommandation Personnalisé")
+elif choice=="Outils De Recommandations Personnalisées" :
+    st.subheader("🎯 Recommandations Personnalisées")
+    st.write("Entrez un ID utilisateur et recevez la liste personnalisée des " \
+    "recommandations de films obtenue par filtrage collaboratif et modèle SVD. " \
+    "Sur cette liste de recommandations figure egalement la prediction des notes " \
+    "que l'utilisateur attribuerait à chacun des films qui lui sont recommandés.\n" \
+    "Liste non exhaustive d'ID valides à tester : `6, 47, 73, 343, 971, 1328, 1411, 2568, 2609`")
 
-    user_id = st.number_input("Entrez votre identifiant utilisateur :", min_value=1, step=1)
+    user_id = st.number_input("Entrez un ID utilisateur :", min_value=1, step=1)
 
     if st.button("Obtenir les recommandations") and user_id:
         try:
@@ -169,12 +188,14 @@ elif choice=="Outils De Recommandation De Films" :
 elif choice== "A Propos Du Projet Homeflix" :
     st.subheader("❔ À Propos Du Projet Homeflix")
     try:
-        with open("CONSIGNE.md", "r", encoding="utf-8") as f:
+        with open("../CONSIGNE.md", "r", encoding="utf-8") as f:
             contenu = f.read()
         st.markdown(contenu, unsafe_allow_html=True)
     except FileNotFoundError:
         st.error("CONSIGNE.md non trouvée")
 
+
 logger.info("Application terminée")
+
 
 conn.close()
