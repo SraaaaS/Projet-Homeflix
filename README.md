@@ -119,7 +119,7 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
    
 8. **Outils De Recommandation Personnalisé**
 
-    Entrez un id utilisateur et recevez la liste personnalisée des recommandations de films obtenue par filtrage collaboratif et modèle SVD. Sur cette liste de recommandations figure egalement la predicion des notes que l'utilisateur attribuerait à chacun de ces films recommandés.  
+    Entrez un ID utilisateur et recevez la liste personnalisée des recommandations de films obtenue par filtrage collaboratif et modèle SVD. Sur cette liste de recommandations figure egalement la prediction des notes que l'utilisateur attribuerait à chacun des films qui lui sont recommandés.  
     
     On utilise ici l'API :
         `POST HTTP://backend:8000/recommandation/{user_id}`
