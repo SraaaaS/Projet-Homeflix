@@ -117,7 +117,7 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
         `GET http://backend:8000/statistics/{genre}/{year}`  
 
    
-8. **Outils De Recommandation Personnalisé**
+8. **Outils De Recommandations Personnalisées**
 
     Entrez un ID utilisateur et recevez la liste personnalisée des recommandations de films obtenue par filtrage collaboratif et modèle SVD. Sur cette liste de recommandations figure egalement la prediction des notes que l'utilisateur attribuerait à chacun des films qui lui sont recommandés.  
     
@@ -140,4 +140,3 @@ https://github.com/SraaaaS
 
 lucawsss :  
 https://github.com/lucaswsss
-   
