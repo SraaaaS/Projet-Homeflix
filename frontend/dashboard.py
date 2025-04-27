@@ -56,7 +56,7 @@ except Exception as e:
 st.sidebar.title("Navigateur")
 choice = st.sidebar.radio("Sélectionnez une section", ["Accueil", 
                                                       "Distribution Des Notes Moyennes", 
-                                                     "Evolution De La Fréquence Annuel Des Films",
+                                                     "Evolution De La Fréquence Annuelle Des Films",
                                                      "Fréquence Des Films Par Genre",
                                                      "Activité D’un Utilisateur",
                                                      "Statistiques Par Genre Et Année",
@@ -94,10 +94,9 @@ elif choice == "Distribution Des Notes Moyennes":
         st.markdown(log, unsafe_allow_html=True)
 
 
-elif choice == "Evolution De La Fréquence Annuel Des Films":
-    st.subheader("〽️ Evolution De La Fréquence Annuel Des Films")
-    st.write("Histogramme de la frequence des films sortis au cours des années.")
-    
+elif choice == "Evolution De La Fréquence Annuelle Des Films":
+    st.subheader("〽️ Evolution De La Fréquence Annuelle Des Films")
+    st.write("Histogramme de la fréquence des films sortis au cours des années.")
     if 'release_date' in movies_df.columns:
         # Conversion en datetime
         movies_df["release_date"] = pd.to_datetime(movies_df["release_date"], errors="coerce")
@@ -142,8 +141,8 @@ elif choice == "Fréquence Des Films Par Genre":
 elif choice=="Activité D’un Utilisateur":
     st.subheader("👩‍💻 Activité D’un Utilisateur")
     st.write("""En entrant un ID utilisateur (un nombre entre 1 et 270896) puis en cliquant sur "Obtenir les activités de l'utilisateur" vous obtiendrez :\n
-   - le graphe de la répartion des notes moynnes attribuées par cet utilisateur,\n
-   - le nombre total de notes qu'il a attribué ainsi que\n
+   - le graphe de la répartition des notes moyennes attribuées par cet utilisateur,\n
+   - le nombre total de notes qu'il a attribuées\n
    - la moyenne de ces attributions de notes.""")
     ratings_df=conn.execute("SELECT user_id, rating FROM ratings").df() 
     user_saisi=st.text_input("Entrez l'ID de l'utilisateur :", "")
@@ -159,7 +158,7 @@ elif choice=="Activité D’un Utilisateur":
                 logger.success(f"Activité trouvée pour user_id={user_saisi_int}")
                 user_ratings=ratings_df[ratings_df["user_id"] == user_saisi]
                 hist_data=user_ratings["rating"].value_counts().sort_index()
-                st.title("Réparition des notes moyennes")
+                st.title("Répartition des notes moyennes")
                 st.line_chart(hist_data,color="#ff798c")
                 moyenne=user_ratings["rating"].astype(float).mean()
                 total=len(user_ratings["rating"])
@@ -188,7 +187,7 @@ elif choice=="Statistiques Par Genre Et Année" :
 
     # --- Inputs utilisateur ---
     genre = st.text_input("Entrez un genre :", value="Action")
-    year = st.number_input("Choisissez une année:", min_value=1900, max_value=2100, step=1, value=2000)
+    year = st.number_input("Choisissez une année:", min_value=1933, max_value=2026, step=1, value=2000)
 
     if st.button("Afficher les statistiques"):
         logger.info(f"Demande de stats pour genre={genre} et année={year}")
@@ -239,9 +238,10 @@ elif choice=="Outils De Recommandations Personnalisées" :
     st.subheader("🎯 Recommandations Personnalisées")
     st.write("Entrez un ID utilisateur et recevez la liste personnalisée des " \
     "recommandations de films obtenue par filtrage collaboratif et modèle SVD. " \
-    "Sur cette liste de recommandations figure egalement la prediction des notes " \
-    "que l'utilisateur attribuerait à chacun des films qui lui sont recommandés.\n" \
-    "Liste non exhaustive d'ID valides à tester : `6, 47, 73, 343, 971, 1328, 1411, 2568, 2609`")
+    "Sur cette liste de recommandations figure également la prédiction des notes " \
+    "que l'utilisateur attribuerait à chacun des films qui lui sont recommandés.")
+    st.write(" ")
+    st.write("Liste non exhaustive d'ID valides à tester : `6, 47, 73, 343, 971, 1328, 1411, 2568, 2609`")
 
     user_id = st.number_input("Entrez un ID utilisateur :", min_value=1, step=1)
 
