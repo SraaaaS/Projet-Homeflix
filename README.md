@@ -90,7 +90,7 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
 
     L'histogramme de la distribution globale des notes moyennes données aux films par les utilisateurs de TMDB.  
 
-    ![homeflix1](./homeflix1.jpg)
+    ![homeflix1](./homeflix1.png)
    
 
 3. **Evolution De La Fréquence Annuel Des Films** 
