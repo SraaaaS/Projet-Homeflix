@@ -89,16 +89,22 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
 1. **Distribution Des Notes Moyennes**  
 
     L'histogramme de la distribution globale des notes moyennes données aux films par les utilisateurs de TMDB.  
+
+    ![homeflix1](./homeflix1.jpg)
    
 
 3. **Evolution De La Fréquence Annuel Des Films** 
 
     L'histogramme de la frequence des films sortis selon l'année considérée.  
+
+    ![Homeflix2](./homeflix2.png) 
    
 
 4. **Fréquence Des Films Par Genre**  
 
     L'histogramme de la répartition des films selon les genres cinématographiques considérés.  
+
+    ![Homeflix3](./homeflix3.png) 
    
 
 6. **Activité D’un Utilisateur**  
@@ -107,6 +113,8 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
    - le graphe de la répartion des notes moynnes attribuées par cet utilisateur,
    - le nombre total de notes qu'il a attribué ainsi que
    - la moyenne de ces attributions de notes.  
+
+   ![Homeflix4](./homeflix4.png) 
      
 
 7. **Statistiques Par Genre Et Année**  
@@ -116,6 +124,8 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
     L'API est ici:
         `GET http://backend:8000/statistics/{genre}/{year}`  
 
+    ![Homeflix5](./homeflix5.png)  
+
    
 8. **Outils De Recommandations Personnalisées**
 
@@ -124,7 +134,11 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
     On utilise ici l'API :
         `POST HTTP://backend:8000/recommandation/{user_id}`
 
-    Dû à la combinaison des fichiers de ratings et de movies, les id d'utilisateurs possibles sont plus restreints, voici une liste alétoire et non exhaustive d'id valides à tester : `6, 47, 73, 343, 971, 1328, 1411, 2568, 2609`.
+    Dû à la combinaison des fichiers de ratings et de movies, les id d'utilisateurs possibles sont plus restreints.  
+      
+    Voici une liste non exhaustive d'id valides à tester : `6, 47, 73, 343, 971, 1328, 1411, 2568, 2609`.  
+
+    ![Homeflix6](./homeflix6.png) 
    
 
 
