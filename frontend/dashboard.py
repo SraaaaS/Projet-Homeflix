@@ -69,13 +69,30 @@ if choice== "Accueil":
     
     st.subheader("🏡 Accueil")
     
+    # try:
+    #     with open("../README.md", "r", encoding="utf-8") as f:
+    #         contenu = f.read()
+    #     st.markdown(contenu, unsafe_allow_html=True)
+    
+    # except FileNotFoundError:
+    #     st.error("README.md non trouvé")
+
     try:
         with open("../README.md", "r", encoding="utf-8") as f:
             contenu = f.read()
+
+        # Remplacer les chemins d'images relatifs par des liens GitHub RAW
+        contenu = contenu.replace(
+            "images/",
+            "https://raw.githubusercontent.com/SraaaaS/Projet-Homeflix/docs/images-readme/images/"
+        )
+
+        # Afficher le README avec Streamlit
         st.markdown(contenu, unsafe_allow_html=True)
-    
+
     except FileNotFoundError:
-        st.error("README.md non trouvé")
+        st.error("README.md non trouvé.")
+
 
     st.markdown("---")
     st.subheader("📝 Journaux d'activité (logs)")
