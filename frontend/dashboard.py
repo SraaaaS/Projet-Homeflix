@@ -84,7 +84,7 @@ if choice== "Accueil":
         # Remplacer les chemins d'images relatifs par des liens GitHub RAW
         contenu = contenu.replace(
             "images/",
-            "https://raw.githubusercontent.com/SraaaaS/Projet-Homeflix/docs/images/"
+            "https://raw.githubusercontent.com/SraaaaS/Projet-Homeflix/docs/images/images/"
         )
 
         # Afficher le README avec Streamlit
