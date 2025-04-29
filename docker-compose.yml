@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  init-db:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend  # Ou chemin vers ton Dockerfile backend
+    working_dir: /app/backend
+    command: ["python3", "database.py"]
+    volumes:
+      - ./backend:/app/backend
+      - ./data:/app/backend/data
+    depends_on: []
+    restart: "no"
+    
   backend:
     build:
       context: .
@@ -11,7 +23,7 @@ services:
       - flix_network    
     #
     volumes:
-       - ./data/movies.db:/app/data/movies.db  # Pour accéder à la BDD duckdb
+       - ./data:/app/backend/data  # Pour accéder à la BDD duckdb
     command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 
   frontend:
@@ -24,7 +36,7 @@ services:
       - flix_network
       #
     volumes:
-      - ./data/movies.db:/app/frontend/data/movies.db:ro
+      - ./data:/app/frontend/data:ro
     depends_on:
     - backend
 
