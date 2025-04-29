@@ -68,6 +68,8 @@ insert_dataframe("ratings", df_ratings, ["user_id", "film_id", "rating", "timest
 logging.info(f" {len(df_movies)} films importés dans DuckDB.")
 logging.info(f" {len(df_ratings)} évaluations importées dans DuckDB.")
 
+conn.close()
+
 
 # #version simple pour la creation des tables
 

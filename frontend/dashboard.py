@@ -36,22 +36,40 @@ visual_log(f"Démarrage de l'application Streamlit Homeflix", "INFO")
 st.set_page_config(page_title="Homeflix : Tableau de Bord", layout="centered")
 st.title(" Homeflix : Tableau de Bord")
 
-try:
-    logger.success("Connexion réussie à la base de données movies.db")
-    visual_log(f"Connexion réussie à la base de données movies.db", "SUCCESS")
-    conn = duckdb.connect('data/movies.db',  read_only=True)
-except Exception as e:
-    logger.error(f"Erreur de connexion à DuckDB : {e}")
+# try:
+#     logger.success("Connexion réussie à la base de données movies.db")
+#     visual_log(f"Connexion réussie à la base de données movies.db", "SUCCESS")
+#     conn = duckdb.connect('data/movies.db',  read_only=True)
+# except Exception as e:
+#     logger.error(f"Erreur de connexion à DuckDB : {e}")
 
-# Chargement des données
+# #Chargement des données
+# try:
+#     ratings_df = conn.execute("SELECT user_id, film_id, rating FROM ratings").df()
+#     movies_df = conn.execute("SELECT * FROM movies").df()
+#     logger.success(f"{len(ratings_df)} ratings et {len(movies_df)} films chargés avec succès")
+
+# except Exception as e:
+#     logger.error(f"Erreur lors du chargement des données : {e}")
+#     visual_log(f"Erreur lors du chargement des données : {e}", "ERROR")
 try:
-    ratings_df = conn.execute("SELECT user_id, film_id, rating FROM ratings").df()
-    movies_df = conn.execute("SELECT * FROM movies").df()
-    logger.success(f"{len(ratings_df)} ratings et {len(movies_df)} films chargés avec succès")
+    response_movies = requests.get("http://backend:8000/movies")
+    response_ratings = requests.get("http://backend:8000/ratings")
+
+    if response_movies.status_code == 200 and response_ratings.status_code == 200:
+        movies_df = pd.DataFrame(response_movies.json()["Liste des films"])
+        ratings_df = pd.DataFrame(response_ratings.json()["Liste des notes de film"])
+
+        logger.success(f"{len(movies_df)} films et {len(ratings_df)} notes chargés via l'API")
+        visual_log(f"{len(movies_df)} films et {len(ratings_df)} notes chargés via l'API", "SUCCESS")
+    else:
+        st.error("Erreur lors du chargement des données depuis l'API.")
+        logger.error("Erreur d'appel API /movies ou /ratings")
 
 except Exception as e:
-    logger.error(f"Erreur lors du chargement des données : {e}")
-    visual_log(f"Erreur lors du chargement des données : {e}", "ERROR")
+    logger.error(f"Erreur API : {e}")
+    visual_log(f"Erreur API : {e}", "ERROR")
+
 
 st.sidebar.title("Navigateur")
 choice = st.sidebar.radio("Sélectionnez une section", ["Accueil", 
@@ -161,8 +179,12 @@ elif choice=="Activité D’un Utilisateur":
    - le graphe de la répartition des notes moyennes attribuées par cet utilisateur,\n
    - le nombre total de notes qu'il a attribuées\n
    - la moyenne de ces attributions de notes.""")
-    ratings_df=conn.execute("SELECT user_id, rating FROM ratings").df() 
-    user_saisi=st.text_input("Entrez l'ID de l'utilisateur :", "")
+    
+    #ratings_df=conn.execute("SELECT user_id, rating FROM ratings").df() 
+    if ratings_df.empty:
+        st.error("Aucune donnée de notation disponible.")
+    else:
+        user_saisi=st.text_input("Entrez l'ID de l'utilisateur :", "")
 
     if st.button("Obtenir les activités de l'utilisateur") and user_saisi:
         logger.info(f"Utilisateur a saisi : {user_saisi}")
@@ -174,6 +196,7 @@ elif choice=="Activité D’un Utilisateur":
             if user_saisi_int in ratings_df["user_id"].unique().astype(int):
                 logger.success(f"Activité trouvée pour user_id={user_saisi_int}")
                 user_ratings=ratings_df[ratings_df["user_id"] == user_saisi]
+                #user_ratings = ratings_df[ratings_df["user_id"].astype(str) == str(user_saisi_int)]
                 hist_data=user_ratings["rating"].value_counts().sort_index()
                 st.title("Répartition des notes moyennes")
                 st.line_chart(hist_data,color="#ff798c")
@@ -319,4 +342,4 @@ elif choice== "A Propos Du Projet Homeflix" :
 logger.info("Fin de session utilisateur sur Homeflix dashboard")
 visual_log(f"Fin de session utilisateur sur Homeflix dashboard", "INFO")
         
-conn.close()
+#conn.close()

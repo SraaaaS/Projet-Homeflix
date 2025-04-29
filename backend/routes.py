@@ -26,6 +26,13 @@ def get_movie():
     return {"Liste des films": dataset.to_dict(orient='records')}
 
 
+router.get('/ratings', response_model=Dict[str,List[Movie]])
+def get_ratings():
+    logger.info("Route '/ratings' appelée pour récupérer la liste des notes de films")
+    requete = "SELECT user_id, film_id, rating FROM rating"
+    dataset = conn.execute(requete).df()
+    logger.success(f"{len(dataset)} notes de films récupérés depuis la base de données")
+    return {"Liste des notes de film": dataset.to_dict(orient='records')}
 
 
 @router.post("/recommandation/{id_user}", response_model=ReponseDeRecommandation)
