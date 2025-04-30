@@ -109,7 +109,7 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
 
 6. **Activité D’un Utilisateur**  
   
-    Entrez un id utilisateur : c'est un nombre entre 1 et 270896. En cliquant sur "Obtenir les activités de l'utilisateur" s'affichent:
+    Entrez un id utilisateur : c'est un nombre entre 1 et 1000. En cliquant sur "Obtenir les activités de l'utilisateur" s'affichent:
    - le graphe de la répartion des notes moynnes attribuées par cet utilisateur,
    - le nombre total de notes qu'il a attribué ainsi que
    - la moyenne de ces attributions de notes.  
@@ -136,7 +136,7 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
 
     Dû à la combinaison des fichiers de ratings et de movies, les id d'utilisateurs possibles sont plus restreints.  
       
-    Voici une liste non exhaustive d'id valides à tester : `6, 47, 73, 343, 971, 1328, 1411, 2568, 2609`.  
+    Voici une liste non exhaustive d'id valides à tester : `6, 47, 73, 343, 542, 971, 999`.  
 
     ![Homeflix6](images/homeflix6.png) 
    
