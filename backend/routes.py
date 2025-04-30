@@ -1,6 +1,5 @@
 from fastapi import APIRouter, FastAPI, HTTPException
 from typing import List, Dict
-import pandas as pd
 import duckdb
 from models import recommend_movies
 from schemas import Movie, ReponseDeRecommandation, Statistics, Ratings
@@ -83,6 +82,6 @@ def get_statistics(genres : str, year : int):
                 "distribution_genres" : genre_distrib.to_dict(orient="records") }
                 }
     
-    except Exception as e:
+    except Exception:
         logger.error(f"Erreur lors de la récupération des statistiques: {traceback.format_exc()}")
         raise HTTPException(status_code=500, detail="Erreur lors de la récupération des statistiques")

@@ -1,6 +1,4 @@
 import streamlit as st
-import duckdb
-import pandas as pd
 import requests
 import pandas as pd
 import altair as alt
@@ -28,7 +26,7 @@ def visual_log(message: str, level: str = "INFO"):
 
 
 logger.info("Démarrage de l'application Streamlit Homeflix")
-visual_log(f"Démarrage de l'application Streamlit Homeflix", "INFO")
+visual_log("Démarrage de l'application Streamlit Homeflix", "INFO")
 
 st.set_page_config(page_title="Homeflix : Tableau de Bord", layout="centered")
 st.title(" Homeflix : Tableau de Bord")
@@ -221,7 +219,7 @@ elif choice=="Statistiques Par Genre Et Année" :
 
             if response.status_code == 200:
                 logger.success("Réponse API /statistics reçue avec succès")
-                visual_log(f"Réponse API /statistics reçue avec succès", "SUCCESS")
+                visual_log("Réponse API /statistics reçue avec succès", "SUCCESS")
         
                 data = response.json()['resultat']
 
@@ -279,7 +277,7 @@ elif choice=="Outils De Recommandations Personnalisées" :
             )
             if response.status_code == 200:
                 logger.success("Réponse API /recommandation reçue avec succès")
-                visual_log(f"Réponse API /recommandation reçue avec succès", "SUCCESS")
+                visual_log("Réponse API /recommandation reçue avec succès", "SUCCESS")
         
                 data = response.json()
                 st.success(f"Recommandations pour l'utilisateur {data['id']}")
@@ -303,7 +301,7 @@ elif choice=="Outils De Recommandations Personnalisées" :
 
 elif choice== "A Propos Du Projet Homeflix" :
     logger.info("Consultation de la page informative des consignes du projet")
-    visual_log(f"Consultation de la page informative des consignes du projet", "INFO")
+    visual_log("Consultation de la page informative des consignes du projet", "INFO")
         
     st.subheader("❔ À Propos Du Projet Homeflix")
     
@@ -322,4 +320,4 @@ elif choice== "A Propos Du Projet Homeflix" :
 
 
 logger.info("Fin de session utilisateur sur Homeflix dashboard")
-visual_log(f"Fin de session utilisateur sur Homeflix dashboard", "INFO")
+visual_log("Fin de session utilisateur sur Homeflix dashboard", "INFO")

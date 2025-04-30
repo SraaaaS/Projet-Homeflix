@@ -82,11 +82,9 @@ def recommend_movies(user_id: int) -> ReponseDeRecommandation:
         return ReponseDeRecommandation(
             id=user_id,
             recommandation=recommandations
-        )
+        )    
 
-        
-
-    except Exception as e:
+    except Exception:
         logger.error(f"Erreur inattendue lors de la génération de recommandations pour user_id={user_id}: {traceback.format_exc()}")
         raise
 
