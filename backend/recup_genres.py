@@ -28,7 +28,7 @@ df = pd.read_csv("data/movies.csv")
 def convert_genres(genre_ids_str):
     # Nettoyer et convertir en liste d'int
     if pd.isna(genre_ids_str):
-        return ""  # ou "Inconnu" si tu veux marquer les cas vides
+        return "" 
 
     genre_ids = [int(g.strip()) for g in str(genre_ids_str).split(",")]
     # Mapper chaque ID au nom via genre_map

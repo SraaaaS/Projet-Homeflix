@@ -7,7 +7,6 @@ from schemas import ReponseDeRecommandation, ItemDeRecommandation
 from loguru import logger
 import traceback
 
-
 def recommend_movies(user_id: int) -> ReponseDeRecommandation:
     
     try:
@@ -47,8 +46,6 @@ def recommend_movies(user_id: int) -> ReponseDeRecommandation:
         pred_df_scaled = pd.DataFrame(scaler.fit_transform(pred_df), index=pred_df.index, columns=pred_df.columns)
         pred_df = pred_df_scaled
 
-            
-        print(pred_df.index.tolist()[:10])
 
         if user_id not in pred_df.index:
             logger.warning(f"L'utilisateur {user_id} n'a pas de prédictions disponibles")
@@ -82,16 +79,12 @@ def recommend_movies(user_id: int) -> ReponseDeRecommandation:
 
         logger.success(f"{len(recommandations)} recommandations générées pour user_id={user_id}")
 
-        #conn.close() #il faut fermer les connexions tchip
-
         return ReponseDeRecommandation(
             id=user_id,
             recommandation=recommandations
-        )
+        )    
 
-        
-
-    except Exception as e:
+    except Exception:
         logger.error(f"Erreur inattendue lors de la génération de recommandations pour user_id={user_id}: {traceback.format_exc()}")
         raise
 

@@ -7,8 +7,9 @@ conn = duckdb.connect("data/movies.db")
 df = conn.execute("SELECT * FROM movies").df()
 df2 = conn.execute("SELECT * FROM ratings").df()
 
-# Afficher le tableau dans VS Code
-print(df)  # Affichage basique dans la console
-print(df2) #Affichage seconde table
+# Afficher les tableaux dans VS Code
+print(df) 
+print(df2)
+
 # Fermer la connexion
 conn.close()
