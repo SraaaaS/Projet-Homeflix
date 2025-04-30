@@ -4,8 +4,8 @@ import pandas as pd
 # Charger le CSV avec pandas
 df = pd.read_csv("data/ratings.csv")
 
-# Créer (ou ouvrir) la base de données DuckDB
-con = duckdb.connect("data/ratings.db")  # Tu peux changer le chemin si tu veux
+# Ouvrir la base de données DuckDB
+con = duckdb.connect("data/ratings.db") 
 
 # Écrire le DataFrame dans la base de données comme table "ratings"
 con.execute("DROP TABLE IF EXISTS ratings;")

@@ -1,12 +1,8 @@
-from fastapi import APIRouter, FastAPI
-from typing import List, Optional, Dict
-import pandas as pd
-import duckdb   
-
+from fastapi import APIRouter, FastAPI, HTTPException
+from typing import List, Dict
+import duckdb
 from models import recommend_movies
-from schemas import Movie, ReponseDeRecommandation, Statistics, Top_Movies, Genre_Distrib, Ratings
-
-from fastapi import HTTPException
+from schemas import Movie, ReponseDeRecommandation, Statistics, Ratings
 import traceback
 from loguru import logger
 
@@ -40,7 +36,7 @@ def post_recommandations(id_user : int):
     logger.info(f"Route '/recommandation/{id_user}' appelée pour générer des recommandations")
     
     try:
-        liste_de_recommandations = recommend_movies(id_user) #la fonction realisant les recmmandations
+        liste_de_recommandations = recommend_movies(id_user) #la fonction realisant les recommandations
         logger.success(f"Recommandations générées pour l'utilisateur {id_user}")
         return liste_de_recommandations 
     
@@ -86,6 +82,6 @@ def get_statistics(genres : str, year : int):
                 "distribution_genres" : genre_distrib.to_dict(orient="records") }
                 }
     
-    except Exception as e:
+    except Exception:
         logger.error(f"Erreur lors de la récupération des statistiques: {traceback.format_exc()}")
         raise HTTPException(status_code=500, detail="Erreur lors de la récupération des statistiques")

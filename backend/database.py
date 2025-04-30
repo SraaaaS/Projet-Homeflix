@@ -2,7 +2,6 @@ import os
 import logging
 import pandas as pd
 import duckdb
-from loguru import logger
 
 # Configuration
 DB_PATH = "data/movies.db"
@@ -74,32 +73,3 @@ logging.info(f" {len(df_movies)} films importés dans DuckDB.")
 logging.info(f" {len(df_ratings)} évaluations importées dans DuckDB.")
 
 conn.close()
-
-
-# #version simple pour la creation des tables
-
-# import duckdb
-# # Connexion à la base de données
-# DB_PATH = "data/movies.db"  # Stocker la base dans le dossier data
-# conn = duckdb.connect(DB_PATH)
-# # Création des tables si elles n'existent pas déjà
-# conn.execute("""
-# CREATE TABLE IF NOT EXISTS movies (
-#     id INTEGER PRIMARY KEY,
-#     title TEXT,
-#     genres TEXT,
-#     release_date TEXT,
-#     vote_average FLOAT
-# );
-# """)
-# conn.execute("""
-# CREATE TABLE IF NOT EXISTS ratings (
-#     user_id INTEGER,
-#     film_id INTEGER,
-#     rating FLOAT,
-#     timestamp INTEGER
-# );
-# """)
-# def get_connection():
-#     """Renvoie la connexion active à DuckDB"""
-#     return conn
