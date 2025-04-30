@@ -18,24 +18,3 @@ RUN pip install --no-cache-dir -r requirements.txt
 EXPOSE 8501
 
 CMD ["streamlit", "run", "dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]
-
-# FROM python:3.11
-
-# RUN apt-get update && apt-get install -y --no-install-recommends \
-#     build-essential \
-#     gcc \
-#     && rm -rf /var/lib/apt/lists/*
-
-# WORKDIR /app/frontend
-
-# COPY frontend/ .
-# COPY data/ ./data
-# COPY images/ ./images
-# COPY CONSIGNE.md ./
-# COPY README.md ../
-
-# RUN pip install --no-cache-dir -r requirements.txt
-
-# EXPOSE 8501
-
-# CMD ["streamlit", "run", "dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]
