@@ -1,10 +1,19 @@
 from pydantic import BaseModel
 from typing import List, Union, Optional
+from datetime import date
 
 class Movie(BaseModel):
     id : int
     title : str    
     genres : Optional[str]
+    release_date : date
+    vote_average : float
+
+class Ratings(BaseModel):
+    user_id : int
+    film_id : int
+    rating : float
+    timestamp : int 
 
 class ItemDeRecommandation(BaseModel):
     title : str

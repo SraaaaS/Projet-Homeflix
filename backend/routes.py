@@ -4,7 +4,7 @@ import pandas as pd
 import duckdb   
 
 from models import recommend_movies
-from schemas import Movie, ReponseDeRecommandation, Statistics, Top_Movies, Genre_Distrib
+from schemas import Movie, ReponseDeRecommandation, Statistics, Top_Movies, Genre_Distrib, Ratings
 
 from fastapi import HTTPException
 import traceback
@@ -20,13 +20,20 @@ conn = duckdb.connect(DB_PATH, read_only=True)
 @router.get('/movies', response_model=Dict[str,List[Movie]])
 def get_movie():
     logger.info("Route '/movies' appelée pour récupérer la liste des films")
-    requete = "SELECT id, title, genres FROM movies"
+    requete = "SELECT * FROM movies"
     dataset = conn.execute(requete).df()
     logger.success(f"{len(dataset)} films récupérés depuis la base de données")
     return {"Liste des films": dataset.to_dict(orient='records')}
 
 
-
+@router.get('/ratings', response_model=Dict[str,List[Ratings]])
+def get_ratings():
+    logger.info("Route '/ratings' appelée pour récupérer la liste des notes de films")
+    requete = "SELECT * FROM ratings"
+    dataset = conn.execute(requete).df()
+    logger.success(f"{len(dataset)} notes de films récupérés depuis la base de données")
+    return {"Liste des notes de film": dataset.to_dict(orient='records')}
+ 
 
 @router.post("/recommandation/{id_user}", response_model=ReponseDeRecommandation)
 def post_recommandations(id_user : int):    
