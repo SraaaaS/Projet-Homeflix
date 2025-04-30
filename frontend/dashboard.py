@@ -143,7 +143,7 @@ elif choice == "Fréquence Des Films Par Genre":
 
     # Aplatir la liste et compter
     from collections import Counter
-    flat_genres = [genre for sublist in all_genres for genre in sublist if genre]  # Flatten + remove empty
+    flat_genres = [genre for sublist in all_genres for genre in sublist if genre]
     genre_counts = Counter(flat_genres)
 
     # Convertir en DataFrame
@@ -274,7 +274,7 @@ elif choice=="Outils De Recommandations Personnalisées" :
         try:
             # Appel à l'API backend
             response = requests.post(
-                f"http://backend:8000/recommandation/{user_id}"  # Remplace par ton URL si besoin
+                f"http://backend:8000/recommandation/{user_id}"
             
             )
             if response.status_code == 200:
