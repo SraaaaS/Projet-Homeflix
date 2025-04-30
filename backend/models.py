@@ -7,7 +7,6 @@ from schemas import ReponseDeRecommandation, ItemDeRecommandation
 from loguru import logger
 import traceback
 
-
 def recommend_movies(user_id: int) -> ReponseDeRecommandation:
     
     try:
