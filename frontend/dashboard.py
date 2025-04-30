@@ -1,14 +1,11 @@
 import streamlit as st
 import duckdb
 import pandas as pd
-import seaborn as sns
 import requests
 import pandas as pd
 import altair as alt
 import numpy as np
-import matplotlib.pyplot as plt
 from loguru import logger
-from pathlib import Path
 
 # Logs visuels pour Streamlit
 visual_logs = []
@@ -36,22 +33,6 @@ visual_log(f"Démarrage de l'application Streamlit Homeflix", "INFO")
 st.set_page_config(page_title="Homeflix : Tableau de Bord", layout="centered")
 st.title(" Homeflix : Tableau de Bord")
 
-# try:
-#     logger.success("Connexion réussie à la base de données movies.db")
-#     visual_log(f"Connexion réussie à la base de données movies.db", "SUCCESS")
-#     conn = duckdb.connect('data/movies.db',  read_only=True)
-# except Exception as e:
-#     logger.error(f"Erreur de connexion à DuckDB : {e}")
-
-# #Chargement des données
-# try:
-#     ratings_df = conn.execute("SELECT user_id, film_id, rating FROM ratings").df()
-#     movies_df = conn.execute("SELECT * FROM movies").df()
-#     logger.success(f"{len(ratings_df)} ratings et {len(movies_df)} films chargés avec succès")
-
-# except Exception as e:
-#     logger.error(f"Erreur lors du chargement des données : {e}")
-#     visual_log(f"Erreur lors du chargement des données : {e}", "ERROR")
 ratings_df = pd.DataFrame(None)
 try:
     # Appel API /movies
@@ -97,13 +78,6 @@ if choice== "Accueil":
     
     st.subheader("🏡 Accueil")
     
-    # try:
-    #     with open("../README.md", "r", encoding="utf-8") as f:
-    #         contenu = f.read()
-    #     st.markdown(contenu, unsafe_allow_html=True)
-    
-    # except FileNotFoundError:
-    #     st.error("README.md non trouvé")
 
     try:
         with open("../README.md", "r", encoding="utf-8") as f:
@@ -190,7 +164,6 @@ elif choice=="Activité D’un Utilisateur":
    - le nombre total de notes qu'il a attribuées\n
    - la moyenne de ces attributions de notes.""")
     
-    #ratings_df=conn.execute("SELECT user_id, rating FROM ratings").df() 
     if ratings_df.empty:
         st.error("Aucune donnée de notation disponible.")
     else:
@@ -205,7 +178,6 @@ elif choice=="Activité D’un Utilisateur":
 
             if user_saisi_int in ratings_df["user_id"].unique().astype(int):
                 logger.success(f"Activité trouvée pour user_id={user_saisi_int}")
-                #user_ratings=ratings_df[ratings_df["user_id"] == user_saisi]
                 user_ratings = ratings_df[ratings_df["user_id"].astype(str) == str(user_saisi_int)]
                 hist_data=user_ratings["rating"].value_counts().sort_index()
                 st.title("Répartition des notes moyennes")
@@ -351,5 +323,3 @@ elif choice== "A Propos Du Projet Homeflix" :
 
 logger.info("Fin de session utilisateur sur Homeflix dashboard")
 visual_log(f"Fin de session utilisateur sur Homeflix dashboard", "INFO")
-        
-#conn.close()
