@@ -18,6 +18,7 @@ COPY data/ ./data
 RUN pip install --no-cache-dir -r requirements.txt
 
 #ENV PYTHONPATH=/app
+RUN python3 database.py
 
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
 

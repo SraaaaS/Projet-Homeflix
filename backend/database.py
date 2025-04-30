@@ -2,6 +2,8 @@ import os
 import logging
 import pandas as pd
 import duckdb
+from loguru import logger
+
 # Configuration
 DB_PATH = "data/movies.db"
 MOVIES_CSV = "data/movies.csv"
@@ -27,6 +29,7 @@ def safe_read_csv(filepath):
         exit(1)
 df_movies = safe_read_csv(MOVIES_CSV)
 df_ratings = safe_read_csv(RATINGS_CSV)
+df_ratings = df_ratings[df_ratings["timestamp"].isin(df_ratings["timestamp"].unique()[:1000])]
 # Vérification des colonnes
 def validate_columns(df, required_columns, filename):
     missing_columns = required_columns - set(df.columns)
@@ -51,8 +54,10 @@ def insert_dataframe(table_name, df, columns):
     # Supprimer les doublons dans le DataFrame avant l'insertion
     if table_name == "ratings":
         df = df.drop_duplicates(subset=["user_id", "film_id"])  # Utiliser "user_id" et "film_id" pour la table ratings
+        logging.info(df.dtypes)
     else:
         df = df.drop_duplicates(subset=["id"])  # Utilise "id" pour les films
+        logging.info(df)
     # Insérer les données
     conn.execute(f'''
         INSERT INTO {table_name} ({', '.join(columns)})

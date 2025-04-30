@@ -14,12 +14,12 @@ def recommend_movies(user_id: int) -> ReponseDeRecommandation:
         logger.info(f"Connexion à la base de données pour générer une recommandation pour user_id={user_id}")
         conn = duckdb.connect("data/movies.db",read_only=True)
 
-        ratings_df = conn.execute("SELECT user_id, film_id, rating FROM ratings").df()
-        movies_df = conn.execute("SELECT id, title FROM movies").df()
+        ratings_df = conn.execute("SELECT * FROM ratings").df()
+        movies_df = conn.execute("SELECT * FROM movies").df()
         logger.success(f"Chargement terminé : {len(ratings_df)} ratings et {len(movies_df)} films récupérés")
 
         
-        ratings_df = ratings_df[ratings_df["user_id"].isin(ratings_df["user_id"].unique()[:10000])]
+        ratings_df = ratings_df[ratings_df["user_id"].isin(ratings_df["user_id"].unique()[:1000])]
         ratings_df["film_id"] = ratings_df["film_id"].astype(int) #Sécurité
         movies_df["id"] = movies_df["id"].astype(int) #Sécurité 
         ratings_df["user_id"] =  ratings_df["user_id"].astype(int)#sara
@@ -81,11 +81,18 @@ def recommend_movies(user_id: int) -> ReponseDeRecommandation:
             ))
 
         logger.success(f"{len(recommandations)} recommandations générées pour user_id={user_id}")
+
+        #conn.close() #il faut fermer les connexions tchip
+
         return ReponseDeRecommandation(
             id=user_id,
             recommandation=recommandations
         )
 
+        
+
     except Exception as e:
         logger.error(f"Erreur inattendue lors de la génération de recommandations pour user_id={user_id}: {traceback.format_exc()}")
         raise
+
+    

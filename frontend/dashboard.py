@@ -52,23 +52,33 @@ st.title(" Homeflix : Tableau de Bord")
 # except Exception as e:
 #     logger.error(f"Erreur lors du chargement des données : {e}")
 #     visual_log(f"Erreur lors du chargement des données : {e}", "ERROR")
+ratings_df = pd.DataFrame(None)
 try:
+    # Appel API /movies
     response_movies = requests.get("http://backend:8000/movies")
-    response_ratings = requests.get("http://backend:8000/ratings")
-
-    if response_movies.status_code == 200 and response_ratings.status_code == 200:
+    if response_movies.status_code == 200:
         movies_df = pd.DataFrame(response_movies.json()["Liste des films"])
-        ratings_df = pd.DataFrame(response_ratings.json()["Liste des notes de film"])
-
-        logger.success(f"{len(movies_df)} films et {len(ratings_df)} notes chargés via l'API")
-        visual_log(f"{len(movies_df)} films et {len(ratings_df)} notes chargés via l'API", "SUCCESS")
+        logger.success(f"{len(movies_df)} films chargés via l'API")
+        visual_log(f"{len(movies_df)} films chargés via l'API", "SUCCESS")
     else:
-        st.error("Erreur lors du chargement des données depuis l'API.")
-        logger.error("Erreur d'appel API /movies ou /ratings")
+        st.error("Erreur lors du chargement des films depuis l'API.")
+        logger.error("Erreur d'appel API /movies")
+
+    # Appel API /ratings
+    response_ratings = requests.get("http://backend:8000/ratings")
+    
+    if response_ratings.status_code == 200:
+        ratings_df = pd.DataFrame(response_ratings.json()["Liste des notes de film"])
+        logger.success(f"{len(ratings_df)} notes chargées via l'API")
+        visual_log(f"{len(ratings_df)} notes chargées via l'API", "SUCCESS")
+    else:
+        st.error("Erreur lors du chargement des notes depuis l'API.")
+        logger.error("Erreur d'appel API /ratings")
 
 except Exception as e:
     logger.error(f"Erreur API : {e}")
     visual_log(f"Erreur API : {e}", "ERROR")
+
 
 
 st.sidebar.title("Navigateur")
