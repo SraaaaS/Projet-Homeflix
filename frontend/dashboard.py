@@ -185,7 +185,7 @@ elif choice == "Fréquence Des Films Par Genre":
 
 elif choice=="Activité D’un Utilisateur":
     st.subheader("👩‍💻 Activité D’un Utilisateur")
-    st.write("""En entrant un ID utilisateur (un nombre entre 1 et 270896) puis en cliquant sur "Obtenir les activités de l'utilisateur" vous obtiendrez :\n
+    st.write("""En entrant un ID utilisateur (un nombre entre 1 et 1000) puis en cliquant sur "Obtenir les activités de l'utilisateur" vous obtiendrez :\n
    - le graphe de la répartition des notes moyennes attribuées par cet utilisateur,\n
    - le nombre total de notes qu'il a attribuées\n
    - la moyenne de ces attributions de notes.""")
@@ -205,8 +205,8 @@ elif choice=="Activité D’un Utilisateur":
 
             if user_saisi_int in ratings_df["user_id"].unique().astype(int):
                 logger.success(f"Activité trouvée pour user_id={user_saisi_int}")
-                user_ratings=ratings_df[ratings_df["user_id"] == user_saisi]
-                #user_ratings = ratings_df[ratings_df["user_id"].astype(str) == str(user_saisi_int)]
+                #user_ratings=ratings_df[ratings_df["user_id"] == user_saisi]
+                user_ratings = ratings_df[ratings_df["user_id"].astype(str) == str(user_saisi_int)]
                 hist_data=user_ratings["rating"].value_counts().sort_index()
                 st.title("Répartition des notes moyennes")
                 st.line_chart(hist_data,color="#ff798c")

@@ -109,7 +109,7 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
 
 6. **Activité D’un Utilisateur**  
   
-    Entrez un id utilisateur : c'est un nombre entre 1 et 270896. En cliquant sur "Obtenir les activités de l'utilisateur" s'affichent:
+    Entrez un id utilisateur : c'est un nombre entre 1 et 1000. En cliquant sur "Obtenir les activités de l'utilisateur" s'affichent:
    - le graphe de la répartion des notes moynnes attribuées par cet utilisateur,
    - le nombre total de notes qu'il a attribué ainsi que
    - la moyenne de ces attributions de notes.  
