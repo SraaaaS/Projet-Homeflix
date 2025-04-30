@@ -3,7 +3,7 @@ from typing import List, Dict
 import pandas as pd
 import duckdb
 from models import recommend_movies
-from schemas import Movie, ReponseDeRecommandation, Statistics, Top_Movies, Genre_Distrib, Ratings
+from schemas import Movie, ReponseDeRecommandation, Statistics, Ratings
 import traceback
 from loguru import logger
 
