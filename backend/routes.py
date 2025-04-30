@@ -1,5 +1,5 @@
 from fastapi import APIRouter, FastAPI, HTTPException
-from typing import List, Optional, Dict
+from typing import List, Dict
 import pandas as pd
 import duckdb
 from models import recommend_movies
