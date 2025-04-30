@@ -37,7 +37,7 @@ def post_recommandations(id_user : int):
     logger.info(f"Route '/recommandation/{id_user}' appelée pour générer des recommandations")
     
     try:
-        liste_de_recommandations = recommend_movies(id_user) #la fonction realisant les recmmandations
+        liste_de_recommandations = recommend_movies(id_user) #la fonction realisant les recommandations
         logger.success(f"Recommandations générées pour l'utilisateur {id_user}")
         return liste_de_recommandations 
     
