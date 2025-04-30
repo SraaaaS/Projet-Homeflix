@@ -26,7 +26,7 @@ def get_movie():
     return {"Liste des films": dataset.to_dict(orient='records')}
 
 
-router.get('/ratings', response_model=Dict[str,List[Ratings]])
+@router.get('/ratings', response_model=Dict[str,List[Ratings]])
 def get_ratings():
     logger.info("Route '/ratings' appelée pour récupérer la liste des notes de films")
     requete = "SELECT * FROM ratings"
