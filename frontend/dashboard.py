@@ -291,7 +291,7 @@ elif choice=="Outils De Recommandations Personnalisées" :
     "Sur cette liste de recommandations figure également la prédiction des notes " \
     "que l'utilisateur attribuerait à chacun des films qui lui sont recommandés.")
     st.write(" ")
-    st.write("Liste non exhaustive d'ID valides à tester : `6, 47, 73, 343, 971, 1328, 1411, 2568, 2609`")
+    st.write("Liste non exhaustive d'ID valides à tester : `6, 47, 73, 343, 542, 971, 999`")
 
     user_id = st.number_input("Entrez un ID utilisateur :", min_value=1, step=1)
 

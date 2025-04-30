@@ -136,7 +136,7 @@ Outre la page d'acceuil, la barre latérale permet de choisir parmi plusieurs se
 
     Dû à la combinaison des fichiers de ratings et de movies, les id d'utilisateurs possibles sont plus restreints.  
       
-    Voici une liste non exhaustive d'id valides à tester : `6, 47, 73, 343, 971, 1328, 1411, 2568, 2609`.  
+    Voici une liste non exhaustive d'id valides à tester : `6, 47, 73, 343, 542, 971, 999`.  
 
     ![Homeflix6](images/homeflix6.png) 
    
