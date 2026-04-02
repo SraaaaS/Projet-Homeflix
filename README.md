@@ -16,7 +16,7 @@ Bienvenue sur Homeflix, une plateforme de recommandation de films basée sur le 
 # Objectifs du Projet
 
 - Proposer des recommandations de films personnalisées basées sur les goûts similaires d’autres utilisateurs.
-- Réaliser ce filtrage collaboratif par uilisation d'un modèle SVD.
+- Réaliser ce filtrage collaboratif par utilisation d'un modèle SVD.
 - Offrir une visualisation des tendances cinématographiques avec quelques statistiques : dates de sorties, genres, notes attribuées, etc...
 - Concevoir une architecture modulaire, et conteneurisée pour faciliter le déploiement de l'application.
 
